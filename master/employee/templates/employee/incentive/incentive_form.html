@@ -1,0 +1,173 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Incentive</title>
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+    <style>
+        table, th, td {
+            border: 2px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- SIDE BAR -->
+        
+        {% include 'body/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                 <!-- Topbar -->
+
+            
+                
+                {% include 'body/header.html' %}
+
+                <div class="card">
+                    <div class="card-header">
+                            <div class="card-title">Create Incentive</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <form method="post" id="incentive-form">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+
+                                    <div class="form-group">
+                                        <label for="employee_code">Employee Code</label>
+                                        <input type="text" id="employee_code" name="employee_code" class="form-control" placeholder="Enter employee code">
+                                    </div>
+
+                                    <div id="employee-details">
+                                        <table class="table table-bordered table-hover" id="employee-table">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Employee Code</th>
+                                                    <th>Employee Name</th>
+                                                    <th>Incentive Amount</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <button type="button" id="save-btn" class="btn btn-success">Save Incentives</button>
+                                    <div id="error-message" class="error-message"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            function searchEmployee() {
+                var employeeCode = $('#employee_code').val();
+                var date = $('#id_date').val();
+
+                if (employeeCode && date) {
+                    $.ajax({
+                        url: "{% url 'incentive_create' %}",
+                        type: "GET",
+                        data: { 'employee_code': employeeCode, 'date': date },
+                        success: function(response) {
+                            if (response.employee) {
+                                $('#employee-table tbody').append(`
+                                    <tr data-employee-code="${response.employee.employee_code}">
+                                        <td>${response.employee.employee_code}</td>
+                                        <td>${response.employee.employee_name}</td>
+                                        <td><input type="number" name="amount" class="form-control" required></td>
+                                        <td><button type="button" class="btn btn-danger remove-employee">Remove</button></td>
+                                    </tr>
+                                `);
+                                $('#employee_code').val('');
+                                $('#error-message').text('');
+                            } else {
+                                $('#error-message').text(response.error);
+                            }
+                        },
+                        error: function(xhr) {
+                            $('#error-message').text('Error: ' + xhr.responseJSON.error);
+                        }
+                    });
+                }
+            }
+
+            $('#employee_code').on('keypress', function(e) {
+                if (e.which === 13) { // Enter key
+                    e.preventDefault();
+                    searchEmployee();
+                }
+            });
+
+            $('#employee-table').on('click', '.remove-employee', function() {
+                $(this).closest('tr').remove();
+            });
+
+            $('#save-btn').on('click', function() {
+                var formData = {
+                    'date': $('#id_date').val(),
+                    'table_data': JSON.stringify(
+                        $('#employee-table tbody tr').map(function() {
+                            var row = $(this);
+                            return {
+                                'employee_code': row.data('employee-code'),
+                                'amount': row.find('input[name="amount"]').val()
+                            };
+                        }).get()
+                    ),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                };
+
+                $.ajax({
+                    url: "{% url 'incentive_create' %}",
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            window.location.href = "{% url 'incentive_list' %}"; // Redirect to incentive list
+                        } else {
+                            $('#error-message').text('Error: ' + response.error);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-message').text('Error: ' + xhr.responseJSON.error);
+                    }
+                });
+            });
+        });
+    </script>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

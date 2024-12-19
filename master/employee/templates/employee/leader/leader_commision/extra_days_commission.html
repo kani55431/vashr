@@ -1,0 +1,202 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extra Days Commission Form </title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .main-panel {
+            margin: 20px;
+        }
+        .card {
+            border-radius: 0.5rem;
+        }
+        
+        h1 {
+            margin-top: 20px;
+            color: #333;
+        }
+        
+        tfoot td {
+            font-weight: bold;
+            background-color: #f1f1f1;
+        }
+        .btn-submit {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    {% include 'body/header.html' %}
+    {% include 'body/sidebar.html' %}
+
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Extra Days Commission Form </h5>
+                        </div>
+                        <div class="card-body">
+                       
+                         
+                            <form method="post">
+                              {% csrf_token %}
+                              {{ form.as_p }}
+                              <button type="submit" class="btn btn-primary">Calculate</button>
+                              <button type="submit" name="download" value="1" class="btn btn-secondary">Download Excel</button>
+                              <button onclick="printTable()" class="btn btn-primary">Print</button>
+                            </form>
+                            </form>
+                         
+                            {% if commission_details %}
+                            <input type="text" id="myInput" onkeyup="filterTable('myInput', 'dataTable')" placeholder="Search for something..." style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; width: 300px;">
+                           
+                            <h3>Commission Details for {{ form.cleaned_data.leader }} in {{ form.cleaned_data.month }}</h3>
+                            <table class="table table-bordered table-bordered-bd-primary" id="dataTable">
+                              <thead>
+                                <tr>
+                                    <th>Sl.no</th>
+                                  <th>Employee Code</th>
+                                  <th>Employee Name</th>
+                                  <th>Extra Days</th>
+                                  <th>Commission Amount</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for detail in commission_details %}
+                                  <tr>
+                                    <td>{{  forloop.counter }}</td>
+
+                                   
+                                    <td>{{ detail.employee_code }}</td>
+                                    <td>{{ detail.employee_name }}</td>
+                                    <td>{{ detail.extra_days }}</td>
+                                    <td>{{ detail.commission_amount }}</td>
+                                  </tr>
+                                {% endfor %}
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <td colspan="3"><strong>Total</strong></td>
+                                  <td>{{ total_extra_days }}</td>
+                                  <td>{{ total_commission_amount }}</td>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><script>
+        function printTable() {
+            var printWindow = window.open('', '', 'height=800,width=1000');
+            
+            // Start constructing the print document
+            printWindow.document.write('<html><head><title>Commission Attendance Print</title>');
+            printWindow.document.write('<style>body { font-family: Arial, sans-serif; }');
+            printWindow.document.write('.printable-table { width: 100%; margin: auto; border-collapse: collapse; }');
+            printWindow.document.write('table { border-collapse: collapse; width: 100%; }');
+            printWindow.document.write('th, td { border: 1px solid #333; padding: 6px; text-align: left; }');
+            printWindow.document.write('th { background-color: #f2f2f2; }');
+            printWindow.document.write('@page { size: landscape; margin: 10mm; }');
+            printWindow.document.write('</style></head><body>');
+            
+            printWindow.document.write('<div style="text-align: center; margin-bottom: 20px;">');
+            printWindow.document.write('<h2><strong>Commission PF Attendance Report for {{ form.cleaned_data.leader }} in {{ form.cleaned_data.month }}</strong></h2>');
+            printWindow.document.write('</div>');
+            
+            // Start the data table structure
+            printWindow.document.write('<div class="printable-table">');
+            printWindow.document.write('<table>');
+            
+            // Table Head
+            printWindow.document.write('<thead>');
+            printWindow.document.write('<tr><th>Sl.No</th><th>Employee Code</th><th>Employee Name</th><th>Present Days</th><th>Commission Amount</th></tr>');
+            printWindow.document.write('</thead>');
+            
+            // Table Body
+            printWindow.document.write('<tbody>');
+            {% for attendance in commission_details %}
+            printWindow.document.write('<tr>');
+            printWindow.document.write('<td>{{ forloop.counter }}</td>');
+            printWindow.document.write('<td>{{ attendance.employee_code }}</td>');
+            printWindow.document.write('<td>{{ attendance.employee_name }}</td>');
+            printWindow.document.write('<td>{{ attendance.extra_days }}</td>');
+            printWindow.document.write('<td>{{ attendance.commission_amount }}</td>');
+            printWindow.document.write('</tr>');
+            {% endfor %}
+            
+            // Add a final row for the totals at the end of the table
+            printWindow.document.write('<tr>');
+            printWindow.document.write('<td colspan="3" style="text-align: right;"><strong>Total:</strong></td>');
+            printWindow.document.write('<td><strong>{{ total_extra_days }}</strong></td>');
+            printWindow.document.write('<td><strong>{{ total_commission_amount }}</strong></td>');
+            printWindow.document.write('</tr>');
+            
+            printWindow.document.write('</tbody>');
+        
+            printWindow.document.write('</table></div>');
+        
+            // Close the document
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+        
+            printWindow.focus();
+            printWindow.print();
+        }
+    </script>
+    
+    
+    
+    <script>
+      function filterTable(inputId, tableId) {
+          var input, filter, table, tr, td, i, j, txtValue;
+          input = document.getElementById(inputId);
+          filter = input.value.toUpperCase();
+          table = document.getElementById(tableId);
+          tr = table.getElementsByTagName("tr");
+          for (i = 1; i < tr.length; i++) {
+              tr[i].style.display = "none"; // Initially hide all rows
+              td = tr[i].getElementsByTagName("td");
+              for (j = 0; j < td.length; j++) {
+                  if (td[j]) {
+                      txtValue = td[j].textContent || td[j].innerText;
+                      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                          tr[i].style.display = ""; // Show row if match is found
+                          break; // Stop checking other cells in this row
+                      }
+                  }
+              }
+          }
+      }
+
+      $(document).ready(function() {
+          $('.form-control').select2();
+      });
+  </script>
+    {% include 'body/footer.html' %}
+    <!-- Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

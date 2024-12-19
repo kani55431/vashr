@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PF Salary Report</title>
+    <style>
+        @page {
+            size: A4 landscape; /* Set page size to A4 landscape */
+            margin: 20px; /* Adjust the margins to fit more content */
+        }
+        body {
+            font-family: Arial, sans-serif; /* Font style */
+            font-size: 10px; /* Adjust font size for PDF readability */
+        }
+        table {
+            width: 100%; /* Full width for the table */
+            border-collapse: collapse; /* Collapse borders */
+        }
+        th, td {
+            border: 1px solid #dddddd; /* Border for table cells */
+            text-align: center; /* Center align text */
+            padding: 8px; /* Padding for cells */
+        }
+        th {
+            background-color: #f2f2f2; /* Light gray background for header */
+            font-weight: bold; /* Make header bold */
+        }
+        .narrow {
+            width: 5%; /* Narrow column width */
+        }
+        .wide {
+            width: 10%; /* Wider column width */
+        }
+        .wide2 {
+            width: 8%; /* Medium column width */
+        }
+        .wide3 {
+            width: 12%; /* Wider column for signatures */
+        }
+        .wide4 {
+            width: 17%; /* Wider column for signatures */
+        }
+        .wide5 {
+            width: 17%; /* Wider column for signatures */
+
+        }
+        .code{
+            width: 20%;
+            height: 50px;
+        }
+        h1 {
+            text-align: center; /* Center title */
+            font-size: 18px; /* Larger font size for the title */
+            margin-bottom: 20px; /* Space below the title */
+        }
+    </style>
+</head>
+<body>
+    <h1>PF Salary Report for {{ month }}</h1> <!-- Title with month -->
+
+    <table>
+        <thead>
+            <tr>
+                <th class="narrow">S.NO</th>
+                <th class="code">Code</th>
+                <th class="wide5">Name</th>
+                <th class="wide4">Des</th>
+                <th class="narrow">Wages</th>
+                <th class="narrow">T P Days</th>
+                <th class="narrow">NH / FH</th>
+                <th class="narrow">T  Days</th>
+                <th class="narrow">Gross Amount</th>
+                <th class="narrow">ESI Wages</th>
+                <th class="narrow">EPF Wages</th>
+                <th class="narrow">ESI</th>
+                <th class="narrow">PF</th>
+                <th class="narrow">Advance</th>
+                <th class="narrow">Mess</th>
+                <th class="narrow">Store</th>
+                <th class="narrow">Other</th>
+                <th class="narrow">T Ded</th>
+                <th class="narrow">Net Amount</th>
+                <th class="wide3">Sign</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detail in salary_details %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ detail.employee_code }}
+                    <br>
+                    PF:
+                    {{detail.pf}}
+                    <br>
+                    ESI:
+                    {{ detail.esi }}
+                </td>
+                <td>{{ detail.name }}</td>
+                <td>{{ detail.designation }}</td>
+                <td>{{ detail.per_day_salary }}</td>
+                <td>{{ detail.total_present_days }}</td>
+                <td>{{ detail.holidays }}</td>
+                <td>{{ detail.total_days }}</td>
+                <td>{{ detail.gross_amount|floatformat:0 }}</td>
+                <td>{{ detail.esi_wages|floatformat:0 }}</td>
+                <td>{{ detail.epf_wages|floatformat:0 }}</td>
+                <td>{{ detail.esi_amount|floatformat:0 }}</td>
+                <td>{{ detail.pf_amount|floatformat:0 }}</td>
+                <td>{{ detail.deductions.advance|floatformat:0 }}</td>
+                <td>{{ detail.deductions.mess|floatformat:0 }}</td>
+                <td>{{ detail.deductions.store|floatformat:0 }}</td>
+                <td>{{ detail.deductions.others|floatformat:0 }}</td>
+                <td>{{ detail.total_deductions|floatformat:0 }}</td>
+                <td>{{ detail.net_salary|floatformat:0 }}</td>
+                <td class="wide3"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
+                <td class="wide"></td>
+                <td>{{ total_data.total_present_days }}</td>
+                <td>{{ total_data.total_holidays }}</td>
+                <td>{{ total_data.total_paid_days}}</td>
+                
+                <td class="wide">{{ total_data.total_gross_amount|floatformat:0 }}</td>
+                <td class="wide">{{ total_data.total_esi_wages|floatformat:0 }}</td>
+                <td class="wide">{{ total_data.total_epf_wages|floatformat:0 }}</td>
+                <td class="wide">{{ total_data.total_esi_amount|floatformat:0 }}</td>
+                <td class="wide">{{ total_data.total_pf_amount|floatformat:0 }}</td>
+                <td class="wide">{{ total_data.total_deductions.advance|floatformat:0 }}</td>
+                <td class="wide">{{ total_data.total_deductions.mess|floatformat:0 }}</td>
+                <td class="wide">{{ total_data.total_deductions.store|floatformat:0 }}</td>
+                <td class="wide"> {{ total_data.total_deductions.others|floatformat:0 }}</td>
+                
+                <td class="wide">{{ total_data.total_deductions_sum|floatformat:0 }}</td> <!-- Total deductions sum -->
+                <td class="wide">{{ total_data.total_net_salary|floatformat:0 }}</td>
+                <td class="wide3"></td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>

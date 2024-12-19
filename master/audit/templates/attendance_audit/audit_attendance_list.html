@@ -1,0 +1,77 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Import Attendance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+</head>
+<body>
+    {% include 'body/audit_header.html' %}
+    {% include 'body/audit_sidebar.html' %}
+    
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Import Attendance</div>
+                        </div>
+                        <div class="card-body">
+                            <h2>Audit Attendance List</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Employee Code</th>
+        <th>Employee Name</th>
+        <th>Category</th>
+        <th>Department</th>
+        <th>Date</th>
+        <th>In Time</th>
+        <th>Out Time</th>
+        <th>P/AB</th>
+        <th>Shift</th>
+        <th>Total Working Hours</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for attendance in audit_attendances %}
+      <tr>
+        <td>{{ attendance.employee.employee_code }}</td>
+        <td>{{ attendance.employee.employee_name }}</td>
+        <td>{{ attendance.category }}</td>
+        <td>{{ attendance.department }}</td>
+        <td>{{ attendance.date }}</td>
+        <td>{{ attendance.intime }}{{ attendance.intime|date:"l" }}</td>
+        <td>{{ attendance.outtime }}</td>
+        <td>{{ attendance.absent }}</td>
+        <td>{{ attendance.shift }}</td>
+        <td>{{ attendance.total_working_hours }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'audit_import_attendance' %}" class="btn btn-primary">Import More Attendance</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.form-control').select2();
+        });
+    </script>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

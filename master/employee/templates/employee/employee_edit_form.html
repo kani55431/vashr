@@ -1,0 +1,265 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Employee</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- SIDE BAR -->
+        
+        {% include 'body/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                 <!-- Topbar -->
+
+            
+                
+                {% include 'body/header.html' %}
+
+                <div class="card">
+                    <div class="card-header">
+                            <div class="card-title">Edit Employee</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container mt-5">
+                                
+                                <form method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <!-- Column 1 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="employee_code" class="form-label">Employee Code</label>
+                                            {{ form.employee_code|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="employee_name" class="form-label">Employee Name</label>
+                                            {{ form.employee_name|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="employee_mobile" class="form-label">Employee Mobile</label>
+                                            {{ form.employee_mobile|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 2 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="emergency_mobile" class="form-label">Emergency Mobile</label>
+                                            {{ form.emergency_mobile|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="father_or_husband_name" class="form-label">Father or Husband Name</label>
+                                            {{ form.father_or_husband_name|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="address_1" class="form-label">Address Line 1</label>
+                                            {{ form.address_1|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 3 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="street" class="form-label">Street</label>
+                                            {{ form.street|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="city" class="form-label">City</label>
+                                            {{ form.city|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="district" class="form-label">District</label>
+                                            {{ form.district|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 4 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="state" class="form-label">State</label>
+                                            {{ form.state|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="pincode" class="form-label">Pincode</label>
+                                            {{ form.pincode|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="date_of_birth" class="form-label">Date of Birth</label>
+                                            {{ form.date_of_birth|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 5 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="age" class="form-label">Age</label>
+                                            {{ form.age|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="qualification" class="form-label">Qualification</label>
+                                            {{ form.qualification|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="marital_status" class="form-label">Marital Status</label>
+                                            {{ form.marital_status|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 6 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="blood_group" class="form-label">Blood Group</label>
+                                            {{ form.blood_group|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="gender" class="form-label">Gender</label>
+                                            {{ form.gender|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="department" class="form-label">Department</label>
+                                            {{ form.department|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 7 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="category" class="form-label">Category</label>
+                                            {{ form.category|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="designation" class="form-label">Designation</label>
+                                            {{ form.designation|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="weekly_off" class="form-label">Weekly Off</label>
+                                            {{ form.weekly_off|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 8 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="date_of_joining" class="form-label">Date of Joining</label>
+                                            {{ form.date_of_joining|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="date_of_re_joining" class="form-label">Date of Re-joining</label>
+                                            {{ form.date_of_re_joining|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="date_of_leaving" class="form-label">Date of Leaving</label>
+                                            {{ form.date_of_leaving|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 9 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="pf_esi_applicable" class="form-label">PF/ESI Applicable</label>
+                                            {{ form.pf_esi_applicable|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="pf_no" class="form-label">PF Number</label>
+                                            {{ form.pf_no|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="esi_no" class="form-label">ESI Number</label>
+                                            {{ form.esi_no|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 10 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="bank_name" class="form-label">Bank Name</label>
+                                            {{ form.bank_name|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="account_holder" class="form-label">Account Holder</label>
+                                            {{ form.account_holder|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="account_no" class="form-label">Account Number</label>
+                                            {{ form.account_no|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 11 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="ifsc_code" class="form-label">IFSC Code</label>
+                                            {{ form.ifsc_code|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="branch" class="form-label">Branch</label>
+                                            {{ form.branch|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="nominee_name" class="form-label">Nominee Name</label>
+                                            {{ form.nominee_name|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 12 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="nominee_relationship" class="form-label">Nominee Relationship</label>
+                                            {{ form.nominee_relationship|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="nominee_age" class="form-label">Nominee Age</label>
+                                            {{ form.nominee_age|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="employee_photo" class="form-label">Employee Photo</label>
+                                            {{ form.employee_photo|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 13 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="aadhar_number" class="form-label">Aadhar Number</label>
+                                            {{ form.aadhar_number|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="migrant_worker" class="form-label">Migrant Worker</label>
+                                            {{ form.migrant_worker|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="migrant_worker_specific" class="form-label">Migrant Worker Specific</label>
+                                            {{ form.migrant_worker_specific|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Column 14 -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="food_expense" class="form-label">Food Expense</label>
+                                            {{ form.food_expense|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="working_mode" class="form-label">Working Mode</label>
+                                            {{ form.working_mode|as_crispy_field }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="status" class="form-label">Status</label>
+                                            {{ form.status|as_crispy_field }}
+                                        </div>
+                        
+                                        <!-- Submit Button -->
+                                        <div class="col-md-12 text-center">
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                           
+                                <a href="{% url 'employee_list' %}" class="btn btn-secondary">Cancel</a>
+                     
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.form-control').select2();
+        });
+    </script>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

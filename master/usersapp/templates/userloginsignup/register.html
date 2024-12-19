@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>HRM Sign Up</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- LINEARICONS -->
+    <link rel="stylesheet" href="{% static 'assets/loginsignup/fonts/linearicons/style.css' %}">
+    
+    <!-- STYLE CSS -->
+    <link rel="stylesheet" href="{% static 'assets/loginsignup/css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="inner">
+            <img src="{% static 'assets/loginsignup/images/image-1.png' %}" alt="" class="image-1">
+            <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
+    <dotlottie-player src="https://lottie.host/9f6630a8-acb5-4e2d-87bb-f8ae4d9d8f28/S7EbHqimot.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
+            <form method="post" action="{% url 'signup' %}">
+                {% csrf_token %}
+                <h3>VASANTHA ADVANCE SYSTEM PAYROLLSign Up</h3>
+                
+                <div class="form-holder">
+                    <span class="lnr lnr-user"></span>
+                    <input type="text" name="username" class="form-control" placeholder="Username" required>
+                </div>
+                
+                <div class="form-holder">
+                    <span class="lnr lnr-lock"></span>
+                    <input type="password" name="password1" class="form-control" placeholder="Password" required>
+                </div>
+                
+                <div class="form-holder">
+                    <span class="lnr lnr-lock"></span>
+                    <input type="password" name="password2" class="form-control" placeholder="Confirm Password" required>
+                </div>
+                
+                <div class="form-holder">
+                    <span class="lnr lnr-apartment"></span>
+                    <select name="department" class="form-control" required>
+                        <option value="" disabled selected>Select Department</option>
+                        <option value="masteruser">Master User</option>
+                        <option value="hruser">HR User</option>
+                    </select>
+                </div>
+                
+                <button type="submit">
+                    <span>Sign Up</span>
+                </button>
+            </form>
+            <img src="{% static 'assets/loginsignup/images/image-2.png' %}" alt="" class="image-2">
+        </div>
+    </div>
+    
+    <script src="{% static 'assets/loginsignup/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/loginsignup/js/main.js' %}"></script>
+</body>
+</html>

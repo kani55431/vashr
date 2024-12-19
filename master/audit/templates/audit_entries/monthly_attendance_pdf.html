@@ -1,0 +1,86 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Monthly Attendance Detail PDF Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 1cm;
+        }
+        body {
+            font-family: 'Helvetica', sans-serif;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            border: 1px solid #000;
+        }
+        .table thead th {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Monthly Attendance Report</h1>
+        
+        <div class="row mb-4">
+            <div class="col-12">
+                <p class="text-center"><strong>Attendance Details from {{ start_date }} to {{ end_date }}</strong></p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Employee Code</th>
+                        
+                            <th>Department</th>
+                            <th>Category</th>
+                            {% for day in dates %}
+                                <th>{{ day|date:"j" }}</th>
+                            {% endfor %}
+                            <th>Present Days</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in attendance_data %}
+                            <tr>
+                                <td>{{ data.employee_code }}</td>
+                            
+                                <td>{{ data.department }}</td>
+                                <td>{{ data.category }}</td>
+                                {% for status in data.attendance %}
+                                    <td>{{ status }}</td>
+                                {% endfor %}
+                                <td>{{ data.present_days }}</td>
+                             
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

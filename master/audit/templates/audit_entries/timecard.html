@@ -1,0 +1,352 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Time Card Attendance Detail</title>
+ 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+       /* Card Styling */
+#report-card {
+    border: 1px solid #000;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    padding: 15px;
+}
+
+/* Header Section */
+#header-section h6 {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #343a40;
+}
+
+#header-section p {
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+/* Table Styling */
+#attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#attendance-table th,
+#attendance-table td {
+    border: 1px solid #000;
+    padding: 5px;
+    text-align: center;
+}
+
+#attendance-table th {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
+
+#attendance-table td {
+    background-color: #e9ecef;
+}
+
+/* Employee Details Section */
+#employee-details-section {
+    border: 1px solid #000;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+/* Footer Section */
+#report-footer {
+    border-top: 1px solid #000;
+    padding-top: 10px;
+    color: #343a40;
+    font-weight: bold;
+}
+
+/* Custom Colors */
+#company-info, #report-title, #additional-info {
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#working-hours, #report-date, #empty-column {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+    </style>
+    
+</head>
+<body>
+    {% include 'body/audit_header.html' %}
+    {% include 'body/audit_sidebar.html' %}
+
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Employee Time Card Attendance Detail</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <h1>Time Card Monthly Consolidated Report</h1>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <button type="submit">Submit</button>
+                                </form>
+                            
+                            
+
+
+                                {% if attendance_records %}
+                                <button onclick="printTable()" class="btn btn-primary">Print</button>
+                                <script>
+                                    function printTable() {
+                                        var printWindow = window.open('', '', 'height=800,width=1000');
+                                        printWindow.document.write('<html><head><title>Attendance Details Print Table</title>');
+                                        printWindow.document.write('<style>');
+                                
+                                        // General Styling
+                                        printWindow.document.write('body { font-family: Arial, sans-serif; }');
+                                        printWindow.document.write('.printable-table { width: 100%; margin: auto; border-collapse: collapse; }');
+                                        printWindow.document.write('table { border-collapse: collapse; width: 100%; }');
+                                        printWindow.document.write('th, td { border: 1px solid #333; padding: 6px; text-align: center; }');
+                                        printWindow.document.write('th { background-color: #f2f2f2; }');
+                                        printWindow.document.write('.center { text-align: center; }');
+                                        printWindow.document.write('.mb-4 { margin-bottom: 24px; }');
+                                        printWindow.document.write('.text-center { text-align: center; }');
+                                        printWindow.document.write('.container { width: 100%; margin: 0 auto; }');
+                                        printWindow.document.write('h6, p { margin: 4px 0; }');
+                                        printWindow.document.write('footer { border-top: 1px solid #333; padding-top: 10px; margin-top: 20px; }');
+                                
+                                        // Header Box Styling
+                                        printWindow.document.write('#header-box { border: 1px solid #333; padding: 20px; margin-bottom: 20px; }');
+                                        printWindow.document.write('#header-section { display: flex; justify-content: space-between; align-items: center; }');
+                                        printWindow.document.write('#header-section div { flex: 1; padding: 5px; text-align: center; }');
+                                        printWindow.document.write('#company-info { text-align: left; }');
+                                        printWindow.document.write('#report-title { text-align: center; }');
+                                        printWindow.document.write('#additional-info { text-align: right; }');
+                                
+                                        // Page layout specific for print
+                                        printWindow.document.write('@page { size: landscape; margin: 10mm; }');
+                                
+                                        printWindow.document.write('</style></head><body>');
+                                
+                                        // Header Content
+                                        printWindow.document.write('<div class="center mb-4">');
+                                        printWindow.document.write('<h2><strong>SKY LAB MILLS</strong></h2>');
+                                        printWindow.document.write('<h3><strong>Attendance Details from {{ start_date }} to {{ end_date }}</strong></h3>');
+                                        printWindow.document.write('</div>');
+                                
+                                        // Print Container for Employee Records
+                                        printWindow.document.write('<div id="print-container" class="container">');
+                                
+                                        // Loop through the employee records and add the report details
+                                        {% for employee, records in attendance_records.items %}
+                                            printWindow.document.write('<div id="report-card" class="mb-4">');
+                                            printWindow.document.write('<div id="report-card-body">');
+                                
+                                            // Header Section with Box
+                                            printWindow.document.write('<div id="header-box">');
+                                            printWindow.document.write('<div id="header-section">');
+                                
+                                            // Left side (company info)
+                                            printWindow.document.write('<div id="company-info">');
+                                            printWindow.document.write('<h6>SKY LAB MILLS</h6>');
+                                            printWindow.document.write('</div>');
+                                
+                                            // Center side (report title)
+                                            printWindow.document.write('<div id="report-title">');
+                                            printWindow.document.write('<h6>TIME CARD MONTHLY CONSOLIDATED REPORT</h6>');
+                                            printWindow.document.write('<p>Form 25 B, Section Rule 103</p>');
+                                            printWindow.document.write('<p>License No: ERO02545</p>');
+                                            printWindow.document.write('</div>');
+                                
+                                            // Right side (additional info including employee details)
+                                            printWindow.document.write('<div id="additional-info">');
+                                            printWindow.document.write('<p>DOJ: {{ employee.date_of_joining }}</p>');
+                                            printWindow.document.write('<p>Name: {{ employee.name }}</p>');  // Added employee name
+                                            printWindow.document.write('<p>Department: {{ employee.department }}</p>');  // Added department info
+                                            printWindow.document.write('<p>Normal Wages: Shift</p>');
+                                            printWindow.document.write('<p>OT: Double The Wage</p>');
+                                            printWindow.document.write('</div>');
+                                
+                                            printWindow.document.write('</div>');  // End of header section
+                                            printWindow.document.write('</div>');  // End of header box
+                                
+                                            // Attendance Table
+                                            printWindow.document.write('<table id="attendance-table" class="custom-table">');
+                                            printWindow.document.write('<thead><tr><th rowspan="2">S.No</th><th rowspan="2">Attn Date</th><th colspan="2" class="text-center">Shift Time</th><th rowspan="2">WHrs</th><th rowspan="2">OT Hrs</th><th rowspan="2">Shift</th><th rowspan="2">Present</th></tr>');
+                                            printWindow.document.write('<tr><th>In Time</th><th>Out Time</th></tr></thead>');
+                                            printWindow.document.write('<tbody>');
+                                
+                                            {% for index, record in records.days %}
+                                                printWindow.document.write('<tr class="attendance-row">');
+                                                printWindow.document.write('<td>{{ index }}</td>');
+                                                printWindow.document.write('<td>{{ record.date }}</td>');
+                                                printWindow.document.write('<td class="intime">{{ record.intime }}</td>');
+                                                printWindow.document.write('<td class="outtime">{{ record.outtime }}</td>');
+                                                printWindow.document.write('<td>{{ record.total_working_hours }}</td>');
+                                                printWindow.document.write('<td>{{ record.ot_hours }}</td>');
+                                                printWindow.document.write('<td class="shift">{{ record.shift }}</td>');
+                                                printWindow.document.write('<td>{{ record.absent }}</td>');
+                                                printWindow.document.write('</tr>');
+                                            {% empty %}
+                                                printWindow.document.write('<tr><td colspan="8">No attendance records found for this employee.</td></tr>');
+                                            {% endfor %}
+                                
+                                            printWindow.document.write('</tbody></table>');
+                                
+                                            // Footer Section
+                                            printWindow.document.write('<footer id="report-footer" class="border-top pt-2 text-center">');
+                                            printWindow.document.write('<p>Total Present: {{ records.total_days }}, Total Holidays: {{ records.total_holidays }}, Total Absent: {{ records.absent_days }}</p>');
+                                            printWindow.document.write('</footer>');
+                                            printWindow.document.write('</div></div>'); // End of report card
+                                        {% endfor %}
+                                
+                                        printWindow.document.write('</div>'); // End of print container
+                                        printWindow.document.write('</body></html>');
+                                
+                                        // Close and Print
+                                        printWindow.document.close();
+                                        printWindow.focus();
+                                        printWindow.print();
+                                    }
+                                </script>
+                                
+                                                                <div id="print-container" class="container my-4">
+                                    {% for employee, records in attendance_records.items %}
+                                    <div id="report-card" class="custom-card mb-4">
+                                        <div id="report-card-body">
+                                            <!-- Header Section -->
+                                            <div id="header-section" class="row mb-4">
+                                                <div id="company-info" class="col-md-4 text-center">
+                                                    <h6>SKY LAB MILLS </h6>
+                                                </div>
+                                                <div id="report-title" class="col-md-4 text-center">
+                                                    <h6>TIME CARD MONTHLY CONSOLIDATED REPORT</h6>
+                                                    <p>Form 25 B, Section Rule 103</p>
+                                                    <p>License No: ERO02545</p>
+                                                </div>
+                                                <div id="additional-info" class="col-md-4 text-center">
+                                                    <p>DOJ: {{ employee.date_of_joining }}</p>
+                                                    <p>Normal Wages: Shift</p>
+                                                    <p>OT: Double The Wage</p>
+                                                </div>
+                                            </div>
+                                
+                                            <!-- Additional Info Section -->
+                                            <div id="additional-info-section" class="row mb-4">
+                                                <div id="working-hours" class="col-md-4 text-center">
+                                                    
+                                                </div>
+                                                <div id="report-date" class="col-md-4 text-center">
+                                                    <p>Date: {{ month|date:"F Y" }}</p>
+                                                </div>
+                                                <div id="empty-column" class="col-md-4 text-center">
+                                                    <p>&nbsp;</p>
+                                                </div>
+                                            </div>
+                                
+                                            <!-- Employee Details Section -->
+                                            <div id="employee-details-section" class="row mb-4 p-3">
+                                                <div id="employee-info" class="col-md-4">
+                                                    <p><strong>Employee Name:</strong> {{ employee.employee_name }}</p>
+                                                    <p><strong>Department:</strong> {{ employee.department.name }}</p>
+                                                </div>
+                                                <div id="additional-employee-info" class="col-md-4">
+                                                    <!-- Add more details if needed -->
+                                                </div>
+                                                <div id="employee-designation" class="col-md-4">
+                                                    <p><strong>Designation:</strong> {{ employee.designation }}</p>
+                                                    <p><strong>Category:</strong> {{ employee.category }}</p>
+                                                    <p><strong>Employee Code:</strong> {{ employee.employee_code }}</p>
+                                                </div>
+                                            </div>
+                                
+                                            <!-- Table Section -->
+                                            <table id="attendance-table" class="custom-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th rowspan="2">S.No</th>
+                                                        <th rowspan="2">Attn Date</th>
+                                                        <th colspan="2" class="text-center">Shift Time</th>
+                                                        <th rowspan="2">WHrs</th>
+                                                        <th rowspan="2">OT Hrs</th>
+                                                        <th rowspan="2">Shift</th>
+                                                        <th rowspan="2">Present</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>In Time</th>
+                                                        <th>Out Time</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for index, record in records.days %}
+                            <tr class="attendance-row">
+                                <td>{{ index }}</td> <!-- using the enumerated index -->
+                                <td>{{ record.date }}</td> <!-- Date is already formatted as a string -->
+                                <td class="intime">{{ record.intime }}</td>
+                                <td class="outtime">{{ record.outtime }}</td>
+                                <td>{{ record.total_working_hours }}</td>
+                                <td>{{ record.ot_hours }}</td>
+                                <td class="shift">{{ record.shift }}</td>
+                                <td>{{ record.absent }}</td>
+                            </tr>
+                        {% empty %}
+                                                    <tr>
+                                                        <td colspan="8">No attendance records found for this employee.</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                
+                                            <!-- Footer Section -->
+                                            <footer id="report-footer" class="border-top pt-2">
+                                                <p>Total Present: {{ records.total_days }}, Total Holidays: {{ records.total_holidays }}, Total Absent: {{ records.absent_days }}</p>
+                                            </footer>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            
+                                
+    <!-- Bootstrap JS and other scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+</body>
+</html>

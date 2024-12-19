@@ -1,0 +1,107 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live Punching List</title>
+    
+    <!-- Include CSS for Select2 and Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    
+    <!-- Include jQuery and Select2 JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- SIDE BAR -->
+        
+        {% include 'body/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                 <!-- Topbar -->
+
+            
+                
+                {% include 'body/header.html' %}
+
+                <div class="card">
+                    <div class="card-header">
+                            <div class="card-title">Punching Live List</div>
+                        </div>
+                        <div class="container-fluid">
+                        <div class="card-body">
+                            <form method="get" class="search-form">
+                                <input type="text" name="search" placeholder="Search by Employee Code" value="{{ search_query }}">
+                                <button type="submit" class="btn btn-success">Search</button>
+                            </form>
+                            
+                            <table class="table table-bordered table-bordered-bd-primary" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Serial No </th>
+                                        <th>Employee Code </th>
+                           
+                              
+                                        
+                                        <th>Log Date</th>
+                                        <th>Direction</th>
+                                        <th>Attendance Direction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for log in logs %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>  <!-- Serial number -->
+                                        <td>{{ log.userid }}</td>
+                                     
+                                       
+                                        <td>{{ log.logdate }}</td>
+                                        <td>{{ log.direction }}</td>
+                                        <td>{{ log.attdirection }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            
+                            <div class="pagination">
+                                {% if logs.has_previous %}
+                                    <a href="?page=1&search={{ search_query }}">&laquo; First</a>
+                                    <a href="?page={{ logs.previous_page_number }}&search={{ search_query }}">Previous</a>
+                                {% endif %}
+                                
+                                <span>Page {{ logs.number }} of {{ logs.paginator.num_pages }}</span>
+                                
+                                {% if logs.has_next %}
+                                    <a href="?page={{ logs.next_page_number }}&search={{ search_query }}">Next</a>
+                                    <a href="?page={{ logs.paginator.num_pages }}&search={{ search_query }}">Last &raquo;</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function() {
+                $('.form-control').select2();
+            });
+        </script>
+        
+        {% include 'body/footer.html' %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,366 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% load audit_custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Salary Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    
+</head>
+<body>
+    {% include 'body/audit_header.html' %}
+    {% include 'body/audit_sidebar.html' %}
+    
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Generate Employee Salary Report</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="header">
+                                     <!-- Form starts here -->
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="form-group">
+                <!-- Render the employee dropdown (including "All Employees") -->
+                <label for="employee_code">Employee</label>
+                {{ form.employee_code }}
+            </div>
+
+            <div class="form-group">
+                <!-- Render the month picker -->
+                <label for="month">Month</label>
+                {{ form.month }}
+            </div>
+
+            <div class="form-group">
+                <!-- Render department dropdown if needed (optional) -->
+                <label for="department">Category (Optional)</label>
+                {{ form.category }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+                                </div>
+                                <style>
+                                    .milk-white {
+                                        background-color: #f8f9fa; /* A soft off-white color */
+                                    }
+                                </style>
+                               
+                               <div class="col-md-4">
+                               
+                                <button onclick="printTable()" class="btn btn-warning">Print</button>
+                            </div>
+    
+        
+                               
+                                
+                                        {% for salary in salary_details %}
+                                   
+                                        <div class="table-responsive table table-bordered table-bordered-bd-primary">
+                                            <div class="container mt-4">
+                                                <div class="text-center mb-3">
+                                                   
+                                        
+                                                
+    <style>
+       
+        .header, .footer {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .details, .salary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .details td, .salary-table th, .salary-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        .salary-table th {
+            background-color: #f2f2f2;
+        }
+        .details {
+            margin-bottom: 0;
+        }
+        .signature {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .signature div {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+ <!-- Payslip Section -->
+<div class="payslip mt-5 milk-white">
+    <div class="text-center lh-1 mb-4">
+        <h2>Vasantha Advanced Systems</h2>
+        <h4>Wage Slip / सेवा पर्ची / मजदूरी पर्ची</h4>
+    <p>From: {{ salary_details.0.from_date }} To: {{ salary_details.0.to_date }}</p>
+
+    </div>
+<br><br>
+<br>
+<br>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-bolder">Employee Code / தொ.எண்/ कर्मचारी कोड:</span>
+                <span class="fw-bold">{{ salary.employee_code }}</span>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-bolder">Employee Name / பெயர்/ कर्मचारी का नाम:</span>
+                <span class="fw-bold">{{ salary.employee_name }}</span>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-bolder">Father's/Husband Name / पिता/ पति का नाम:</span>
+                <span class="fw-bold">{{ salary.father_or_husband_name }}</span>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-bolder">PF No / पी एफ नं. / பி எஃப் எண்:</span>
+                <span class="fw-bold">{{ salary.pf_number }}</span>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-bolder">NOD / काम के दिन / பணியாளர் வேலைநாட்கள்:</span>
+                <span class="fw-bold">{{ salary.total_present_days }}</span>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-bolder">Date of Joining / सेवा में प्रवेश की तिथि:</span>
+                <span class="fw-bold">{{ salary.date_of_joining|date:"d/m/Y" }}</span>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-bolder">Designation / पद / பதவி:</span>
+                <span class="fw-bold">{{ salary.designation }}</span>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-bolder">Department / துறை/विभाग:</span>
+                <span class="fw-bold">{{ salary.department }}</span>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-bolder">Account No / खाता नं. / கணக்கு எண்:</span>
+                <span class="fw-bold">{{ salary.account_no }}</span>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-bolder">ESI No / ई एस आई नं. / இ எஸ் ஐ எண்:</span>
+                <span class="fw-bold">{{ salary.esi_no }}</span>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-bolder">No. of Shifts Worked / शिफ्ट की संख्या:</span>
+                <span class="fw-bold">{{ salary.total_present_days }}</span>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+                <span class="fw-bolder">Paid Holidays / भुगतान की छुट्टियाँ:</span>
+                <span class="fw-bold">{{ salary.holidays }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<table class="table table-bordered table-bordered-bd-primary">
+    <thead class="bg-white text-black">
+        <tr>
+            <th>Earnings / आय / வருவாய்</th>
+            <th>Amount / राशि / தொகை</th>
+            <th>Deductions / कटौती / பிடித்தம்</th>
+            <th>Amount / राशि / தொகை</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Basic Salary / मूल वेतन / அடிப்படை சம்பளம்</td>
+            <td>{{ salary.basic_amount|floatformat:2 }}</td>
+            <td>PF Contribution / पीएफ योगदान / பி எஃப் பங்களிப்பு</td>
+            <td>{{ salary.pf_amount|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td>HRA / मकान किराया भत्ता / வீட்டு வாடகை பெற</td>
+            <td>{{ salary.hra_amount|floatformat:2 }}</td>
+            <td>ESI Contribution / ई एस आई योगदान / இ எஸ் ஐ பங்களிப்பு</td>
+            <td>{{ salary.esi_amount|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td>Conveyance Allowance</td>
+            <td>{{ salary.other_allowance|floatformat:2 }}</td>
+            <td>Advance, Mess, Other Deductions / अन्य कटौती /  பிடித்தம்</td>
+            <td> M:{{ salary.deductions.mess|floatformat:2}}, A:{{salary.deductions.advance|floatformat:2}}, O:{{salary.deductions.others|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td class="text-end">Total Earnings / कुल आय / மொத்த வருமானம்</td>
+            <td>{{ salary.gross_amount|floatformat:2 }}</td>
+            <td class="text-end">Total Deductions / कुल कटौती / மொத்த பிடித்தம்</td>
+            <td>{{ salary.total_deductions|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td class="text-end fw-bold">Net Pay / कुल राशि / நிகர சம்பளம்</td>
+            <td class="fw-bold">{{ salary.net_salary|floatformat:2 }}</td>
+            <td class="text-end fw-bold">In Words / शब्दों में / வார்த்தைகளில்</td>
+            <td class="fw-bold">{{ salary.net_salary_in_words }}</td>
+        </tr>
+    </tbody>
+</table>
+<br> <br>
+
+<div class="d-flex justify-content-between mt-4">
+    <!-- Left Side: Employee's Signature -->
+    <div>
+        <p class="mb-0">Employee's Signature / कर्मचारी हस्ताक्षर / பணியாளர் கையொப்பம்</p>
+    </div>
+    
+    <!-- Right Side: Date of Payment -->
+    <div class="text-end">
+    
+        <div class="mb-3">
+            <span class="fw-bolder">Date of Payment / भुगतान की तिथि / செலுத்திய தேதி:</span>
+            <h6 class="d-block">{{ salary_details.0.payment_date }}</h6>
+        </div>
+        
+    </div>
+</div>
+
+<div>
+    <p class="mb-0">Manager Signature _________________________</p>
+</div>
+
+
+
+                                      
+                                    </div>
+                                </div>
+                                  </div>
+                                  {% endfor %}
+                                </div>
+                                
+
+                                  
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function printTable() {
+            var printWindow = window.open('', '', 'height=800,width=1000');
+            printWindow.document.write('<html><head><title>Salary Slip</title>');
+            printWindow.document.write('<style>body { font-family: Arial, sans-serif; }');
+            printWindow.document.write('.printable-table { width: 60%; margin: auto; border-collapse: collapse; }');
+            printWindow.document.write('table { border-collapse: collapse; width: 100%; }');
+            printWindow.document.write('th, td { border: 1px solid #333; padding: 6px; text-align: left; }');
+            printWindow.document.write('th { background-color: #f2f2f2; }');
+            printWindow.document.write('.border-box { border: 2px solid #333; padding: 20px; margin-bottom: 20px; }'); // Border box styling
+            printWindow.document.write('.text-center { text-align: center; }');
+            printWindow.document.write('@page { size: portrait; margin: 10mm; }');
+            printWindow.document.write('</style></head><body>');
+            
+            {% for salary in salary_details %}
+            printWindow.document.write('<div class="border-box">'); // Start border box
+            printWindow.document.write('<div style="text-align: center; margin-bottom: 20px;">');
+            printWindow.document.write('<h2>Vasantha Advanced Systems</h2>');
+            printWindow.document.write('<h4>Wage Slip / सेवा पर्ची / ஊதிய சீட்டு</h4>'); // Added Tamil translation
+            printWindow.document.write('<p>From: {{ salary_details.0.from_date }} To: {{ salary_details.0.to_date }}</p>');
+            printWindow.document.write('</div>');
+            
+            // Employee Details using Flexbox
+            printWindow.document.write('<div style="display: flex; justify-content: space-between; margin-bottom: 20px;">');
+    
+            // Left Column (Employee Details)
+            printWindow.document.write('<div style="flex: 1; margin-right: 20px;">');
+            printWindow.document.write('<p>Employee Code/பணியாளர் எண்/कर्मचारी संख्या: <strong>{{ salary.employee_code }}</strong></p>');
+            printWindow.document.write('<p>Employee Name/பணியாளர் பெயர்/कर्मचारी का नाम: <strong>{{ salary.employee_name }}</strong></p>');
+            printWindow.document.write('<p>Father\'s/Husband Name/தந்தையின்/கணவன் பெயர்/पिता/पति का नाम: <strong>{{ salary.father_or_husband_name }}</strong></p>');
+            printWindow.document.write('<p>PF No/PF எண்/पीएफ नंबर: <strong>{{ salary.pf_number }}</strong></p>');
+            printWindow.document.write('<p>Date of Joining/பணியில் சேர்ந்த தேதி/कार्य में शामिल होने की तिथि: <strong>{{ salary.date_of_joining|date:"d/m/Y" }}</strong></p>');
+            printWindow.document.write('</div>');
+    
+            // Right Column (Additional Employee Details)
+            printWindow.document.write('<div style="flex: 1;">');
+            printWindow.document.write('<p>Designation/பதவி/पद का नाम: <strong>{{ salary.designation }}</strong></p>');
+            printWindow.document.write('<p>Department/துறை/विभाग: <strong>{{ salary.department }}</strong></p>');
+            printWindow.document.write('<p>Account No/வங்கி கணக்கு எண்/खाता नंबर: <strong>{{ salary.account_no }}</strong></p>');
+            printWindow.document.write('<p>ESI No/ESI எண்/पीएफ नंबर: <strong>{{ salary.esi_no }}</strong></p>');
+            printWindow.document.write('<p> NOD / काम के दिन / பணியாளர் வேலைநாட்கள்: <strong>{{ salary.total_days }}</strong></p>');
+           
+
+            printWindow.document.write('</div>');
+    
+            printWindow.document.write('</div>');
+            
+            // Salary Details Table
+            printWindow.document.write('<table class="printable-table">');
+            printWindow.document.write('<thead><tr>');
+            printWindow.document.write('<th>Earnings / आय / வருமானம்</th><th>Amount</th><th>Deductions / कटौती / பிடித்தம்</th><th>Amount</th></tr></thead><tbody>');
+            printWindow.document.write('<tr><td>Basic Salary / बेसिक वेतन / அடிப்படை சம்பளம்</td><td><strong>{{ salary.basic_amount|floatformat:2 }}</strong></td>');
+            printWindow.document.write('<td>PF Contribution / PF योगदान / PF பங்கீடு</td><td><strong>{{ salary.pf_amount|floatformat:2 }}</strong></td></tr>');
+            printWindow.document.write('<tr><td>HRA / HRA / HRA</td><td><strong>{{ salary.hra_amount|floatformat:2 }}</strong></td>');
+            printWindow.document.write('<td>ESI Contribution / ESI योगदान / ESI பங்கீடு</td><td><strong>{{ salary.esi_amount|floatformat:2 }}</strong></td></tr>');
+            printWindow.document.write('<tr><td>Conveyance Allowance :</td><td><strong>{{ salary.other_allowance|floatformat:2 }}</strong></td>');
+            printWindow.document.write('<td>Advance, Mess,Other Deductions / अन्य कटौतियाँ /  பிடித்தம்</td><td><strong>M:{{ salary.deductions.mess|floatformat:2}}, A:{{salary.deductions.advance|floatformat:2}}, O:{{salary.deductions.others|floatformat:2 }}</strong></td></tr>');
+            printWindow.document.write('<tr><td><strong>Total Earnings / कुल आय / மொத்த வருமானம்</strong></td><td><strong>{{ salary.gross_amount|floatformat:2 }}</strong></td>');
+            printWindow.document.write('<td><strong>Total Deductions / कुल कटौतियाँ / மொத்த பிடித்தம்</strong></td><td><strong>{{ salary.total_deductions|floatformat:2 }}</strong></td></tr>');
+            printWindow.document.write('<tr><td><strong>Net Pay / नेट पे / чистая зарплата</strong></td><td><strong>{{ salary.net_salary|floatformat:2 }}</strong></td>');
+            printWindow.document.write('<td><strong>In Words / शब्दों में / வார்த்தைகளில்</strong></td><td><strong>{{ salary.net_salary_in_words }}</strong></td></tr>');
+            printWindow.document.write('</tbody></table>');
+            
+
+            // Footer - Signature and Date of Payment using Flexbox
+            printWindow.document.write('<div style="display: flex; justify-content: space-between; margin-top: 20px;">');
+    
+            // Left Side: Employee's Signature
+            printWindow.document.write('<div style="flex: 1;">');
+            printWindow.document.write('<p>Employee\'s Signature: _________________________</p>');
+            printWindow.document.write('</div>');
+    
+            // Right Side: Date of Payment
+            printWindow.document.write('<div style="flex: 1; text-align: right;">'); // Align text to the right
+            printWindow.document.write('<p>Date of Payment / भुगतान की तारीख / பணம் செலுத்திய தேதி: <br><strong>{{ salary_details.0.payment_date }}</strong></p>');
+            printWindow.document.write('</div>');
+    
+            printWindow.document.write('</div>');
+            printWindow.document.write('<div><p class="mb-0">Manager Signature _________________________</p></div>');
+            printWindow.document.write('</div>'); // End border box
+            {% endfor %}
+            printWindow.document.write('</body></html>');
+            
+            // Print and close
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+        }
+    </script>
+    
+    
+     
+    <script>
+        $(document).ready(function() {
+            $('.form-control').select2();
+        });
+    </script>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

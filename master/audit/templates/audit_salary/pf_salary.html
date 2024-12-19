@@ -1,0 +1,138 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> PF Salary Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+    <style>
+        /* Custom CSS for black borders */
+        table.table-bordered {
+            border: 2px solid black;
+        }
+
+        table.table-bordered th,
+        table.table-bordered td {
+            border: 1px solid black;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'body/audit_header.html' %}
+    {% include 'body/audit_sidebar.html' %}
+    
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Generate -PF Salary Report</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="header">
+                                    <form method="post" action="{% url 'audit_pf_salary_view' %}">
+                                        {% csrf_token %}
+                                        {{ form.as_p }}
+                                        <button type="submit" name="get">Get Salary Details</button>
+                                   
+                                    </form>
+                                </div>
+                                <div class="table-responsive">
+                                    <div class="table-responsive">
+                                        {% if salary_details %}
+                                        <table class="table table-bordered table-bordered-bd-primary" id="dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th rowspan="2">Sl. No</th>
+                                                    <th rowspan="2">Employee Code</th>
+                                                    <th rowspan="2">Name</th>
+                                                    <th rowspan="2">Designation</th>
+                                                    <th rowspan="2">BASIC<br>DA</th>
+                                                    <th rowspan="2">HRA</th>
+                                                    <th rowspan="2">Others</th>
+                                                    <th rowspan="2">Wages</th>
+                                                    <th rowspan="2"> Working Days</th>
+                                                   <!-- <th rowspan="2">Total Working Days</th>  Display the working days -->
+                                                    <th rowspan="2">NH/FH</th> <!-- Display the holidays -->
+                                                    <th rowspan="2">Total Present Days</th>
+                                                    <th rowspan="2">Gross Amount</th>
+                                                    <th rowspan="2">ESI Wages</th>
+                                                    <th rowspan="2">EPF Wages</th>
+                                                    <th rowspan="2">ESI</th>
+                                                    <th rowspan="2">PF</th>
+                                                    <th colspan="4" class="text-center">Deductions</th>
+                                                    <th rowspan="2">Total Deductions</th>
+                                                    <th rowspan="2">Net Salary</th>
+                                                    <th rowspan="2">Sign</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Advance</th>
+                                                    <th>Mess</th>
+                                                    <th>Store</th>
+                                                    <th>Other</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for detail in salary_details %}
+                                                <tr>
+                                                    <td>{{ detail.sl_no }}</td>
+                                                    <td>{{ detail.employee_code }}</td>
+                                                    <td>{{ detail.name }}</td>
+                                                    <td>{{ detail.designation }}</td>
+                                                    <td>{{ detail.basic_amount }}<br> {{ detail.da_amount }}</td>
+                                                    <td>{{ detail.hra_amount }}</td>
+                                                    <td>{{ detail.other_allowance }}</td>
+                                                    <td>{{ detail.total_wages }}</td>
+                                                    <td>{{ detail.total_present_days  }} </td>
+                                                    <!--<td>{{ detail.working_days }}</td>  Display calculated working days -->
+                                                    <td>{{ detail.holidays }}</td> <!-- Display holiday count -->
+                                                    <td>{{ detail.total_present_days }}</td>
+                                                    <td>{{ detail.gross_amount }}</td>
+                                                    <td>{{ detail.esi_wages }}</td>
+                                                    <td>{{ detail.epf_wages }}</td>
+                                                    <td>{{ detail.esi_amount }}</td>
+                                                    <td>{{ detail.pf_amount }}</td>
+                                                    <td>{{ detail.deductions.advance }}</td>
+                                                    <td>{{ detail.deductions.canteen }}</td>
+                                                    <td>{{ detail.deductions.store }}</td>
+                                                    <td>{{ detail.deductions.others }}</td>
+                                                    <td>{{ detail.total_deductions }}</td>
+                                                    <td>{{ detail.net_salary }}</td>
+                                                    <td></td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        {% endif %}
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.form-control').select2();
+        });
+    </script>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

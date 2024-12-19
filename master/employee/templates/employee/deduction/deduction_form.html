@@ -1,0 +1,183 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Deduction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <!-- Include Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+
+    <style>
+        table, th, td {
+            border: 2px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- SIDE BAR -->
+        
+        {% include 'body/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                 <!-- Topbar -->
+
+            
+                
+                {% include 'body/header.html' %}
+
+                <div class="card">
+                    <div class="card-header">
+                            <div class="card-title">Create Deduction</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <form method="post" id="deduction-form">
+                                    {% csrf_token %}
+                                    {{ deduction_form.as_p }}
+
+                                   
+
+                                    <div id="employee-details">
+                                        <table class="table table-bordered table-hover" id="employee-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Employee Code</th>
+                                                    <th>Employee Name</th>
+                                                    <th>Amount</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <button type="button" id="save-btn" class="btn btn-success">Save Deductions</button>
+                                    <div id="error-message" class="error-message"></div>
+                                </form>
+                                <div class="form-group">
+                                    <label for="employee_code">Employee Code</label>
+                                    <input type="text" id="employee_code" name="employee_code" class="form-control" placeholder="Enter employee code">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Function to search for employee
+            function searchEmployee() {
+                var employeeCode = $('#employee_code').val();
+                var deductionType = $('#id_deduction_type').val();
+
+                if (employeeCode && deductionType) {
+                    $.ajax({
+                        url: "{% url 'deduction_create' %}",
+                        type: "GET",
+                        data: { 'employee_code': employeeCode },
+                        success: function(response) {
+                            if (response.employee) {
+                                $('#employee-table tbody').append(`
+                                    <tr data-employee-code="${response.employee.employee_code}">
+                                        <td>${response.employee.employee_code}</td>
+                                        <td>${response.employee.employee_name}</td>
+                                        <td><input type="number" name="amount" class="form-control" required></td>
+                                        <td><button type="button" class="btn btn-danger remove-employee">Remove</button></td>
+                                    </tr>
+                                `);
+                                $('#employee_code').val('');
+                                $('#error-message').text('');
+                            } else {
+                                $('#error-message').text(response.error);
+                            }
+                        },
+                        error: function(xhr) {
+                            $('#error-message').text('Error: ' + xhr.responseJSON.error);
+                        }
+                    });
+                }
+            }
+
+            // Trigger search on Enter key press
+            $('#employee_code').on('keypress', function(e) {
+                if (e.which === 13) { // Enter key
+                    e.preventDefault();
+                    searchEmployee();
+                }
+            });
+
+            // Remove employee from table
+            $('#employee-table').on('click', '.remove-employee', function() {
+                $(this).closest('tr').remove();
+            });
+
+            // Save deductions
+            $('#save-btn').on('click', function() {
+                var formData = {
+                    'date': $('#id_date').val(),
+                    'deduction_type': $('#id_deduction_type').val(),
+                    'table_data': JSON.stringify(
+                        $('#employee-table tbody tr').map(function() {
+                            var row = $(this);
+                            return {
+                                'employee_code': row.data('employee-code'),
+                                'amount': row.find('input[name="amount"]').val()
+                            };
+                        }).get()
+                    ),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                };
+
+                $.ajax({
+                    url: "{% url 'deduction_create' %}",
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            window.location.href = "{% url 'deduction_list' %}"; // Redirect to deduction list
+                        } else {
+                            $('#error-message').text('Error: ' + response.error);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-message').text('Error: ' + xhr.responseJSON.error);
+                    }
+                });
+            });
+        });
+    </script>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

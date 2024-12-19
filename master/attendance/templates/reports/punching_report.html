@@ -1,0 +1,137 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Punching Report</title>
+   
+ <!-- Include Font Awesome CSS -->
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- SIDE BAR -->
+        
+        {% include 'body/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                 <!-- Topbar -->
+
+            
+                
+                {% include 'body/header.html' %}
+
+                <div class="card">
+                    <div class="card-header">
+                            <div class="card-title">Punching Report</div>
+                        </div>
+                        <div class="card-body">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-default">Get</button>
+    </form>
+   
+ {% if attendance_records %}
+ <input type="text" id="myInput" onkeyup="filterTable('myInput', 'dataTable')" placeholder="Search for something..." style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; width: 300px;">
+ <br>
+    <!-- Add a button to download the report -->
+    <form method="get" action="{% url 'download_punching_report_excel' form.cleaned_data.date %}">
+        <button type="submit" class="btn btn-success">Download as Excel</button>
+    </form>
+
+    <!-- Table to display attendance records -->
+    <table class="table table-bordered table-bordered-bd-primary" id="dataTable">
+        <thead>
+            <tr>
+                <th>Sl</th>
+                <th>Employee Code</th>
+                <th>Employee</th>
+                <th>Category</th>
+                <th>Department</th>
+                <th>Shift</th>
+                <th>Intime</th>
+                <th>Outtime</th>
+                <th>TWH</th>
+                <th>OTH</th>
+                <th>Absent</th>
+                <!-- Add other fields as necessary -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for attendance in attendance_records %}
+            <tr>
+                <td>{{ forloop.counter }}</td> <!-- Serial number -->
+                <td>{{ attendance.employee.employee_code }}</td>
+                <td>{{ attendance.employee.employee_name }}</td>
+                <td>{{ attendance.employee.category }}</td>
+                <td>{{ attendance.employee.department }}</td>
+                <td>{{ attendance.shift }}</td>
+                <td>{{ attendance.intime }}</td>
+                <td>{{ attendance.outtime }}</td>
+                <td>{{ attendance.total_working_hours }}</td>
+                <td>{{ attendance.ot_hours }}</td>
+                <td>{{ attendance.absent }}</td>
+                <!-- Add other fields as necessary -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('.form-control').select2();
+    });
+
+    function filterTable(inputId, tableId) {
+        var input, filter, table, tr, td, i, j, txtValue;
+        input = document.getElementById(inputId);
+        filter = input.value.toLowerCase();
+        table = document.getElementById(tableId);
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 1; i < tr.length; i++) {
+            tr[i].style.display = "none";
+            td = tr[i].getElementsByTagName("td");
+            for (j = 0; j < td.length; j++) {
+                if (td[j]) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                        break;
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+<script>
+$(document).ready(function() {
+$('.form-control').select2();
+});
+</script>
+
+{% include 'body/footer.html' %}
+</body>
+</html>

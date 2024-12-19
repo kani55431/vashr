@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non PF Salary Report</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 1cm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #000;
+            text-align: left;
+            padding: 6px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .narrow {
+            width: 9%;
+        }
+        .narrow1 {
+            width: 7%;
+            text-align: center;
+        }
+        .narrow2 {
+            width: 10%;
+        }
+        .wide {
+            width: 10%;
+        }
+        .wide2 {
+            width: 15%;
+        }
+        .wide3 {
+            width: 10%;
+        }
+        .wide6 {
+            width: 15%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Non PF Salary Report for {{ month }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th class="narrow1">SL</th>
+                <th class="narrow2">E Code</th>
+                <th class="wide3">Name</th>
+                <th class="wide2">Designation</th>
+                <th class="narrow">T Days</th>
+                <th class="narrow">T OTH</th>
+                <th class="wide3">PDW</th>
+                
+                <th class="narrow2">Ince</th>
+
+                <th class="wide3">T Wages</th>
+                <th class="narrow">OT Am</th>
+                <th class="wide3">Gross Amount</th>
+                <th class="narrow">Advance</th>
+                <th class="narrow">Mess</th>
+                <th class="narrow">Store</th>
+                <th class="narrow">Other</th>
+                <th class="narrow">Deduct</th>
+              
+                <th class="narrow">Net Salary</th>
+                <th class="wide6">Sign</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detail in salary_details %}
+            <tr>
+                <td class="narrow">{{ forloop.counter }}</td>
+                <td class="narrow">{{ detail.employee_code }}</td>
+                <td class="wide2">{{ detail.name }}</td>
+                <td class="wide2">{{ detail.designation }}</td>
+                <td class="narrow">{{ detail.total_p_days }}</td>
+                <td class="narrow">{{ detail.total_ot_hours|floatformat:0  }}</td>
+                <td class="narrow">{{ detail.per_day_salary|floatformat:0  }}</td>
+                
+                <td class="narrow2">{{ detail.incentives|floatformat:0  }}</td>
+                <td class="wide">{{ detail.total_wages|floatformat:0  }}</td>
+                <td class="wide">{{ detail.ot_amount|floatformat:0  }}</td>
+                <td class="wide">{{ detail.gross_amount|floatformat:0  }}</td>
+                <td class="narrow">{{ detail.deductions.advance|floatformat:0  }}</td>
+                <td class="narrow">{{ detail.deductions.mess|floatformat:0  }}</td>
+                <td class="narrow">{{ detail.deductions.store|floatformat:0  }}</td>
+                <td class="narrow">{{ detail.deductions.others|floatformat:0  }}</td>
+                <td class="wide">{{ detail.total_deductions|floatformat:0  }}</td>
+               
+                <td class="wide">{{ detail.net_salary|floatformat:0  }}</td>
+                <td class="wide6"></td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td class="narrow1"><strong>Total</strong></td>
+                <td class="narrow2"></td>
+                <td class="wide2"></td>
+                <td class="wide2"></td>
+                <td class="narrow2">{{ total_paid_days|floatformat:0  }}</td>
+                <td class="narrow2">{{ total_ot_hours|floatformat:0  }}</td>
+                <td class="narrow"></td>
+               
+                <td class="narrow2">{{ total_incentives|floatformat:0  }}</td>
+                <td class="wide3">{{ all_total_wages|floatformat:0  }}</td>
+                <td class="wide3">{{ total_ot_amount|floatformat:0  }}</td>
+                <td class="wide3">{{ total_gross_amount|floatformat:0  }}</td>
+                <td class="narrow">{{ total_advance_deductions|floatformat:0  }}</td>
+                <td class="narrow">{{ total_mess_deductions|floatformat:0  }}</td>
+                <td class="narrow">{{ total_store_deductions|floatformat:0  }}</td>
+                <td class="narrow">{{ total_other_deductions|floatformat:0  }}</td>
+                <td class="wide3">{{ all_total_deductions|floatformat:0 }}</td>
+               
+                <td class="wide3">{{ total_net_salary|floatformat:0  }}</td>
+                <td class="wide6"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

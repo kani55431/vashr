@@ -1,0 +1,80 @@
+<!-- incentive_list.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Incentive List</title>
+    <style>
+        table, th, td {
+            border: 2px solid black !important;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- SIDE BAR -->
+        
+        {% include 'body/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                 <!-- Topbar -->
+
+            
+                
+                {% include 'body/header.html' %}
+
+                <div class="card">
+                    <div class="card-header">
+                            <div class="card-title">Incentive List</div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered table-bordered-bd-primary">
+                                <thead>
+                                    <tr>
+                                        <th>Employee Code</th>
+                                        <th>Employee Name</th>
+                                        <th>Date</th>
+                                        <th>Incentive Amount</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for incentive in incentives %}
+                                    <tr>
+                                        <td>{{ incentive.employee.employee_code }}</td>
+                                        <td>{{ incentive.employee.employee_name }}</td>
+                                        <td>{{ incentive.date }}</td>
+                                        <td>{{ incentive.incentive_amount }}</td>
+                                        <td>
+                                            <a href="{% url 'incentive_update' incentive.id %}" class="btn btn-warning btn-sm">Edit</a>
+                                            <a href="{% url 'incentive_delete' incentive.id %}" class="btn btn-danger btn-sm">Delete</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <a href="{% url 'incentive_create' %}" class="btn btn-success">Add New Incentive</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

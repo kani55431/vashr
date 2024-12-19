@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Commission Wage</title>
+</head>
+<body>
+    {% include 'body/header.html' %}
+    {% include 'body/sidebar.html' %}
+
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Delete Commission Wage</div>
+                        </div>
+                        <div class="card-body">
+                            <p>Are you sure you want to delete the commission wage for <strong>{{ object.leader.name }}</strong>?</p>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Yes, delete</button>
+                                <a href="{% url 'commission_wages_list' %}" class="btn btn-secondary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

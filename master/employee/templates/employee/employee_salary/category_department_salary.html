@@ -1,0 +1,296 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Salary Department Total</title>
+    
+    <!-- External CSS & JS Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+
+    <!-- Custom Styles for the Page -->
+    <style>
+        /* Table styling for black borders */
+        table.table-bordered {
+            border: 2px solid black;
+        }
+
+        table.table-bordered th,
+        table.table-bordered td {
+            border: 1px solid black;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- SIDE BAR -->
+        
+        {% include 'body/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                 <!-- Topbar -->
+
+            
+                
+                {% include 'body/header.html' %}
+
+                <div class="card">
+                    <div class="card-header">
+                            <div class="card-title">Non PF Abstract </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="header">
+                                    <!-- Form to filter by category -->
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        {{ form.as_p }}
+                                        <button type="submit">Submit</button>
+                                    </form>
+                                </div>
+
+                                <br>
+                                {% if department_totals %}
+    <!-- Department-wise Totals Table -->
+    <h3 class="text-center">Vasantha Advanced Systems Non PF Abstract  {{ selected_month }} {{ selected_year }}</h2>
+        <button onclick="printTable()" class="btn btn-primary">Print</button>
+        <a href="{% url 'export_department_totals' %}" class="btn btn-secondary">
+            Download Excel
+        </a>
+<br>
+        <form method="POST" action="{% url 'save_non_pf_abstract' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Save Non-PF Abstract</button>
+        </form>
+        
+        
+                
+    <table class="table table-bordered table-bordered-bd-primary" id="dataTable">
+        <thead>
+            <tr>
+                <th>Sl.No</th>
+                <th>Department</th>
+                <th> Employees</th>
+                <th>Employee  Wages</th>
+                <th>Total Days</th>
+                <th>OT hours</th>
+                
+                <th>Shift Wages</th>
+                <th>OT Wages</th>
+               
+                <th>Rent</th>
+                <th> Incentives</th>
+                <th> Gross Amount</th>
+                <th> Advance </th>
+                <th> Mess </th>
+                <th> Store </th>
+                <th> Other </th>
+                <th>Net Wages</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for department_name, department_data in department_totals.items %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ department_name }}</td>
+                    <td>{{ department_data.total_employees }}</td>
+                    <td>{{ department_data.total_per_day_salary }}</td>
+                    <td>{{ department_data.total_paid_days }}</td>
+                    <td>{{ department_data.total_ot_hours }}</td>
+                   
+                    <td>{{department_data.shift_wages}}</td>
+                    <td>{{ department_data.ot_amount }}</td>
+                   
+                    
+                    
+                    <td>{{department_data.total_rent}}</td>
+                    <td>{{ department_data.total_incentives|floatformat:0 }}</td>
+                    <td>{{ department_data.total_gross_amount|floatformat:0 }}</td>
+                    <td>{{ department_data.advance_total|floatformat:0 }}</td>
+                    <td>{{ department_data.mess_total|floatformat:0 }}</td>
+                    <td>{{ department_data.store_total|floatformat:0 }}</td>
+                    <td>{{ department_data.others_total|floatformat:0 }}</td>
+                    <td>{{ department_data.net_salary_total }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    
+    <tbody>
+        <tr>
+            <td></td>
+            <td>Total</td>
+            <td>{{ overall_total_employees }}</td>
+            <td>{{ overall_totals.total_per_day_salary|floatformat:0 }}</td>
+            <td>{{ overall_totals.total_days }}</td>
+            
+            <td>{{ overall_totals.total_ot_hours}}</td>
+           
+            <td>{{ overall_totals.total_shift_wages|floatformat:0}}</td>
+           
+            <td>{{ overall_totals.total_ot_amount|floatformat:0}}</td>
+            
+            
+            <td> {{ overall_totals.total_rent|floatformat:0 }} </td>
+            <td>{{ overall_totals.total_incentives|floatformat:0 }}</td>
+            <td>{{ overall_totals.total_gross_amount|floatformat:0 }}</td>
+            <td>{{ overall_totals.total_advance_deductions|floatformat:0 }}</td>
+            <td>{{ overall_totals.total_mess_deductions|floatformat:0 }}</td>
+            <td>{{ overall_totals.total_store_deductions|floatformat:0 }}</td>
+            <td>{{ overall_totals.total_other_deductions|floatformat:0 }}</td>
+            <td>{{ overall_totals.net_salary_total|floatformat:0 }}</td>
+        </tr>
+    </tbody>
+</table>
+
+{% else %}
+    <!-- HTML content to render if the condition is False -->
+{% endif %}
+
+                                
+                                <!-- Overall Totals Table -->
+                        
+                                                
+                                           
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function printTable() {
+            // Open a new window for printing
+            var printWindow = window.open('', '', 'height=800,width=1000');
+    
+            // Write styles for the printed content
+            printWindow.document.write('<html><head><title>Salary Details</title>');
+            printWindow.document.write('<style>');
+            printWindow.document.write('body { font-family: Arial, sans-serif; }');
+            printWindow.document.write('.printable-table { width: 100%; margin: auto; border-collapse: collapse; }');
+            printWindow.document.write('th, td { border: 1px solid #333; padding: 6px; text-align: right; }'); // Align text to the right
+            printWindow.document.write('th { background-color: #f2f2f2; }');
+            printWindow.document.write('td.small-column { width: 8%; }'); // Smaller columns for Employees and Incentives
+            printWindow.document.write('td.strong { font-weight: bold; }'); // Bold styling for Gross and Net Wages
+            printWindow.document.write('@page { size: landscape; margin: 10mm; }');
+            printWindow.document.write('</style></head><body>');
+    
+            // Header content for the print
+            printWindow.document.write('<div style="text-align: center; margin-bottom: 20px;">');
+            printWindow.document.write('<h2><strong>Vasantha Advanced Systems APPARELS PVT LTD</strong></h2>');
+            printWindow.document.write('<h3><strong>NonPf Salary Abstract of {{ selected_month }} {{ selected_year }}</strong></h3>');
+            printWindow.document.write('</div>');
+    
+            // Start the table for printed content
+            printWindow.document.write('<table class="printable-table">');
+            printWindow.document.write('<thead><tr>');
+            printWindow.document.write('<th>Sl.No</th>');
+            printWindow.document.write('<th>Department</th>');
+            printWindow.document.write('<th class="small-column">Emp</th>'); // Smaller column
+            printWindow.document.write('<th>Employee Wages</th>');
+            printWindow.document.write('<th>Total Days</th>');
+            printWindow.document.write('<th>OT Hours</th>');
+            printWindow.document.write('<th>Shift Wages</th>');
+            printWindow.document.write('<th>OT Wages</th>');
+            printWindow.document.write('<th>Rent</th>');
+            printWindow.document.write('<th class="small-column">Incent</th>'); // Smaller column
+            printWindow.document.write('<th>Gross Amount</th>');
+            printWindow.document.write('<th>Advance</th>');
+            printWindow.document.write('<th>Mess</th>');
+            printWindow.document.write('<th>Store</th>');
+            printWindow.document.write('<th>Other</th>');
+            printWindow.document.write('<th>Net Wages</th>');
+            printWindow.document.write('</tr></thead><tbody>');
+    
+            // Loop through department totals and add rows dynamically
+            {% for department_name, department_data in department_totals.items %}
+            printWindow.document.write('<tr>');
+            printWindow.document.write('<td>{{ forloop.counter }}</td>');
+            printWindow.document.write('<td>{{ department_name }}</td>');
+            printWindow.document.write('<td class="small-column">{{ department_data.total_employees }}</td>');
+            printWindow.document.write('<td>{{ department_data.total_per_day_salary }}</td>');
+            printWindow.document.write('<td>{{ department_data.total_paid_days }}</td>');
+            printWindow.document.write('<td>{{ department_data.total_ot_hours }}</td>');
+            printWindow.document.write('<td>{{ department_data.shift_wages }}</td>');
+            printWindow.document.write('<td>{{ department_data.ot_amount }}</td>');
+            printWindow.document.write('<td>{{ department_data.total_rent }}</td>');
+            printWindow.document.write('<td class="small-column">{{ department_data.total_incentives|floatformat:0 }}</td>');
+            printWindow.document.write('<td class="strong">{{ department_data.total_gross_amount|floatformat:0 }}</td>'); // Bold Gross Amount
+            printWindow.document.write('<td>{{ department_data.advance_total|floatformat:0 }}</td>');
+            printWindow.document.write('<td>{{ department_data.mess_total|floatformat:0 }}</td>');
+            printWindow.document.write('<td>{{ department_data.store_total|floatformat:0 }}</td>');
+            printWindow.document.write('<td>{{ department_data.others_total|floatformat:0 }}</td>');
+            printWindow.document.write('<td class="strong">{{ department_data.net_salary_total }}</td>'); // Bold Net Wages
+            printWindow.document.write('</tr>');
+            {% endfor %}
+    
+            // Print the overall totals
+            printWindow.document.write('<tr>');
+            printWindow.document.write('<td></td>');
+            printWindow.document.write('<td><strong>Total</strong></td>');
+            printWindow.document.write('<td class="small-column">{{ overall_total_employees }}</td>');
+            printWindow.document.write('<td>{{ overall_totals.total_per_day_salary|floatformat:0 }}</td>');
+            printWindow.document.write('<td>{{ overall_totals.total_days }}</td>');
+            printWindow.document.write('<td>{{ overall_totals.total_ot_hours }}</td>');
+            printWindow.document.write('<td>{{ overall_totals.total_shift_wages|floatformat:0 }}</td>');
+            printWindow.document.write('<td>{{ overall_totals.total_ot_amount|floatformat:0 }}</td>');
+            printWindow.document.write('<td>{{ overall_totals.total_rent|floatformat:0 }}</td>');
+            printWindow.document.write('<td class="small-column">{{ overall_totals.total_incentives|floatformat:0 }}</td>');
+            printWindow.document.write('<td class="strong">{{ overall_totals.total_gross_amount|floatformat:0 }}</td>'); // Bold Gross Amount
+            printWindow.document.write('<td>{{ overall_totals.total_advance_deductions|floatformat:0 }}</td>');
+            printWindow.document.write('<td>{{ overall_totals.total_mess_deductions|floatformat:0 }}</td>');
+            printWindow.document.write('<td>{{ overall_totals.total_store_deductions|floatformat:0 }}</td>');
+            printWindow.document.write('<td>{{ overall_totals.total_other_deductions|floatformat:0 }}</td>');
+            printWindow.document.write('<td class="strong">{{ overall_totals.net_salary_total|floatformat:0 }}</td>'); // Bold Net Wages
+            printWindow.document.write('</tr>');
+    
+            // End the table and HTML structure
+            printWindow.document.write('</tbody></table>');
+    
+            // Add signatures at the bottom
+            printWindow.document.write('<div style="margin-top: 50px; display: flex; justify-content: space-between;">');
+            printWindow.document.write('<div style="text-align: left; width: 50%;">');
+            printWindow.document.write('<p><strong>Prepared</strong></p>');
+            printWindow.document.write('</div>');
+            printWindow.document.write('<div style="text-align: right; width: 50%;">');
+            printWindow.document.write('<p><strong>Authorized Signatory</strong></p>');
+            printWindow.document.write('</div>');
+            printWindow.document.write('</div>');
+    
+            printWindow.document.write('</body></html>');
+    
+            // Close the document and print
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+        }
+    </script>
+    
+    <!-- Initialize select2 for form control -->
+    <script>
+        $(document).ready(function() {
+            $('.form-control').select2();
+        });
+    </script>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

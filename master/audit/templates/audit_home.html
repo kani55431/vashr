@@ -1,0 +1,108 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Dashboard Linked List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <!-- Include Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .card-icon {
+            font-size: 36px;
+            margin-right: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .card-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+</head>
+<body>
+
+{% include 'body/audit_header.html' %}
+{% include 'body/audit_sidebar.html' %}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <i class="fa fa-chart-bar card-icon"></i>
+                        <div class="card-title">Punching Report</div>
+                        <a href="{% url 'audit_punching_report' %}" class="card-link">View a Punching</a>
+                    </div>
+                </div>
+               
+                <div class="col-md-4">
+                    <div class="card">
+                        <i class="fas fa-calendar-times card-icon"></i>
+                        <div class="card-title">Absent List</div>
+                        <a href="{% url 'audit_absent_list' %}" class="card-link">View List</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <i class="fas fa-edit card-icon"></i>
+                        <div class="card-title">Adjustment Entry</div>
+                        <a href="{% url 'audit_date_selection_view' %}"  class="card-link">Adjustment Entry</a>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card">
+                        <i class="fas fa-calendar-alt card-icon"></i>
+                        <div class="card-title">Monthly Attendance Report</div>
+                        <a href="{% url 'audit_monthly_attendance_view' %}" class="card-link">Monthly Attendance Report</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <i class="fas fa-clock card-icon"></i>
+                        <div class="card-title">Time Card Report</div>
+                        <a href="{% url 'audit_timecard_view' %}"  class="card-link">Time Card Report</a>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('.form-control').select2();
+});
+</script>
+
+{% include 'body/footer.html' %}
+</body>
+</html>

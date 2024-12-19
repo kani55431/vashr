@@ -1,0 +1,1053 @@
+{% load static %}
+{% include 'body/header.html' %}
+{% include 'body/sidebar.html' %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Detail</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function printContent() {
+            var printContents = document.getElementById('printSection').innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- SIDE BAR -->
+        
+        {% include 'body/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                 <!-- Topbar -->
+
+            
+                
+                {% include 'body/header.html' %}
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Employee Detail</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button onclick="printContent()" class="btn btn-warning">Print</button>
+                            </div>
+                        </div>
+                        <div id="printSection" class="mt-3">
+                            <div class="container mt-5">
+                                <div class="border border-2 border-dark p-4 bg-white mb-4">
+                                    <p class="text-center">
+                                        <strong>VASANTHA Advanced Systems</strong><br>
+                                        S.F.NO.131,132 & 137, Gobipalayam Road, Alukkuli(PO),<br>
+                                        Gobichettipalayam(TK), Erode (DT) - 638453.
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="text-center">TO</p>
+
+                            <div class="container mt-5">
+                                <div class="border border-2 border-dark p-4 bg-white mb-4">
+                                    <h5 class="text-center">Employee</h5>
+                                    <p class="text-center">
+                                        <strong>{{ employee.employee_name }}</strong><br>
+                                        <strong>{{ employee.employee_code }}</strong><br>
+                                        {{ employee.address_1 }},
+                                        {{ employee.street }},
+                                        {{ employee.city }},
+                                        {{ employee.state }},
+                                        {{ employee.pincode }},
+                                        {{ employee.district }}.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            
+                            
+<div class="container my-5">
+    <div class="border border-2 border-dark p-4 bg-white mb-4">
+
+    
+        <!-- Application Form Section -->
+        <div class="border p-4 bg-white">
+            <h4 class="text-center mb-4">Application Form <br> <span>(விண்ணப்ப படிவம்)</span></h3>
+            
+            <table >
+                <tbody>
+                    <tr>
+                        <th scope="row">Name (பெயர்)</th>
+                        <td>{{ employee.employee_name }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Father's/Husband's Name (தகப்பனார் / கணவர் பெயர்)</th>
+                        <td>{{employee.father_or_husband_name}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Date of Birth (பிறந்த தேதி)</th>
+                        <td>{{employee.date_of_birth}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Gender (பாலினம்)</th>
+                        <td>{{employee.gender}}</td>
+                    </tr>
+                    
+                    <tr>
+                        <th scope="row">Educational Qualification (கல்வித் தகுதி)</th>
+                        <td>{{employee.qualification}}</td> 
+                    </tr>
+                    <tr>
+                        <th scope="row">Job Opted For (விரும்பும் வேலை)</th>
+                        <td>Enter job opted for</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Present Address (தற்காலிக முகவரி)</th>
+                        <td>Gobipalayam Road,Alukuli, Gobi,Erode,(DT)-638453, Tamil Nadu</td>
+                       
+                    </tr>
+                    <tr>
+                        <th scope="row">Permanent Address (நிரந்தர முகவரி)</th>
+                        <td> <p>{{employee.address_1 }},
+                            {{employee.street}},
+                            {{employee.city }},
+                            
+                            {{employee.state }},
+                            {{employee.pincode }} ,
+                            {{employee.district }},
+                        </p>   </td>
+                        
+                    </tr>
+                    <tr>
+                        <th scope="row">Identification Marks (அங்க மச்ச அடையாளங்கள்)</th>
+                        <td>Enter identification marks</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Blood Group (இரத்தப்பிரிவு)</th>
+                        <td>{{employee.blood_group}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Mobile Number (மொபைல் எண்)</th>
+                        <td>{{employee.employee_mobile}}</td>
+                    </tr>
+                </tbody>
+            </table>
+    
+            <!-- Certification -->
+            <div class="form-group mt-4">
+                <p>I certify that the particulars furnished by me in this application are true to the best of my knowledge and belief. (மேலே நான் கொடுக்கப்பட்டுள்ள விபரங்கள் அனைத்தும் உண்மையானவை என்று உறுதி அளிக்கிறேன்.)</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <table >
+                            <tr>
+                                <th>Date of Joining: {{employee.pf_date_of_joining}}</th>
+                                <th>Signature of the Applicant (விண்ணப்பதாரரின் கையொப்பம்)</th>
+                                <td>Enter signature</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table >
+                            <tr>
+                                <th>Left Thumb Impression (இடது பெருவிரல் ரேகை)</th>
+                                <td>Left thumb impression</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+        
+    
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+ 
+<div class="container my-5">
+    <div class="border border-2 border-dark p-4 bg-white mb-4">
+        <!-- Centered Card Container -->
+        <div class="card mx-auto" style="max-width: 800px; border-radius: 10px;">
+            <div class="card-body">
+                <!-- Header Section -->
+                <div class="text-center mb-4">
+                    <h1 class="card-title">For Office Use Only</h1>
+                </div>
+
+                <!-- Detail Rows -->
+                <div class="mb-3 row">
+                    <div class="col-6 font-weight-bold">Date of Appointment:</div>
+                    <div class="col-6">{{employee.pf_date_of_joining}}</div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-6 font-weight-bold">Division:</div>
+                    <div class="col-6">{{employee.category.name}}</div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-6 font-weight-bold">Department:</div>
+                    <div class="col-6">{{employee.department.name}}</div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-6 font-weight-bold">Designation:</div>
+                    <div class="col-6">{{employee.designation}}</div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-6 font-weight-bold">Wages:</div>
+                    <div class="col-6">Rs. {{ wages.per_day }} </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-6 font-weight-bold">ESI No:</div>
+                    <div class="col-6">{{employee.esi_no}}</div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-6 font-weight-bold">PF No:</div>
+                    <div class="col-6">{{employee.pf_no}}</div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-6 font-weight-bold"> Aadhar Number:</div>
+                    <div class="col-6">{{employee.aadhar_number}}</div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-6 font-weight-bold"> Mobile:</div>
+                    <div class="col-6">{{employee.employee_mobile}}</div>
+                </div>
+
+                <!-- Footer Section -->
+                <div class="mt-4 text-center text-muted">
+                    <p>For Office Use Only - Not for Public Display</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% if employee.migrant_worker_specific == "hindi-worker" %}
+<div class="container my-5"> 
+    <div class="border border-2 border-dark p-4 bg-white mb-4">
+        <h4 class="text-center">VASANTHA Advanced Systems</h4>
+        <p class="text-center">S.F.NO.131,132 & 137, GOBIPALAYAM ROAD, ALUKKULI(PO), GOBICHETTIPALAYAM(TK), ERODE (DT) - 638453.</p>
+        <h6 class="text-center">Appointment Letter/पद नियुक्ति पत्र</h6>
+        <div class="d-flex justify-content-between">
+            <h6>Recipient/प्राप्तकर्ता</h6>
+            <p><strong>Date/तिथि:</strong> {{employee.pf_date_of_joining}}</p>
+        </div>
+        <div class="d-flex flex-column">
+            <div class="table-responsive">
+                <table class="table ">
+                    <tbody>
+                        <tr>
+                            <td><strong>Name/नाम:</strong></td>
+                            <td>{{ employee.employee_name }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Father/Husband Name/पिता/पति नाम:</strong></td>
+                            <td>{{ employee.father_or_husband_name }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Present Address/उपस्थित पता:</strong></td>
+                            <td>GOBIPALAYAM ROAD, ALUKKULI(PO), GOBICHETTIPALAYAM(TK), ERODE (DT) - 638453.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Permanent Address/स्थायी पता:</strong></td>
+                            <td>{{ employee.address_1 }},
+                                {{ employee.street }},
+                                {{ employee.city }},
+                                {{ employee.state }},
+                                {{ employee.pincode }},
+                                {{ employee.district }},
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>D.O.B/जन्म की तारीख:</strong></td>
+                            <td>{{ employee.date_of_birth }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>D.O.J/शामिल होने की तारीख:</strong></td>
+                            <td>{{ employee.pf_date_of_joining }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Designation/पदवी:</strong></td>
+                            <td>{{ employee.designation }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Basic + DA + HRA Salary/मूल + मंहगाई वेतन:</strong></td>
+                            <td>Rs. {{ wages.basic_amount }} + {{ wages.da_amount }} + {{ wages.hra_amount }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Other Allowance/अन्य भत्ते:</strong></td>
+                            <td>{{ wages.other_allowance }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total/कुल:</strong></td>
+                            <td>{{ total_wages }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <h6 class="text-center">Terms and Conditions/नियम और शर्तें:</h6>
+        <ol>
+            <li>
+                The Management welcomes you to work in this comfortable working environment, with the hope for development through your sincerity, regularity, and obedience. <br>
+                प्रबंधन आपका स्वागत करता है इस सुविधाजनक कार्यस्थल में काम करने के लिए, आपके सत्यनिष्ठा, नियमितता और आज्ञाकारिता के माध्यम से विकास की आशा के साथ।
+            </li>
+            <li>
+                You should not disclose any information about the company and its sister concerns without prior permission from the management. <br>
+                आपको कंपनी और उसकी सहायक शाखाओं के बारे में कोई भी जानकारी बिना प्रबंधन की पूर्व अनुमति के साझा नहीं करनी चाहिए।
+            </li>
+            <li>
+                You may be transferred from this company to its sister concern branches, divisions, departments, factories, or offices (existing or proposed) wherever it may be located, if necessity arises in future. <br>
+                आवश्यकता पड़ने पर आपको इस कंपनी से उसकी सहायक शाखाओं, विभागों, फैक्ट्रियों, या कार्यालयों (वर्तमान या प्रस्तावित) में स्थानांतरित किया जा सकता है।
+            </li>
+            <li>
+                You are hereby required to give your permanent address and communication address for contact during leave or absence from work. <br>
+                आपको अपनी स्थायी पता और संपर्क पता प्रदान करना आवश्यक है, ताकि अवकाश या अनुपस्थिति के दौरान आपसे संपर्क किया जा सके।
+            </li>
+            <li>
+                Your work position is subject to the rules and regulations of the company, as well as the standing orders. <br>
+                आपका कार्य पद कंपनी के नियमों और स्थायी आदेशों के अधीन है।
+            </li>
+            <li>
+                As per oral discussions, you are required to sign and submit a duplicate copy of this appointment order. You must also submit the following documents along with the duplicate copy: <br>
+                मौखिक चर्चा के अनुसार, आपको इस नियुक्ति पत्र की प्रतिलिपि पर हस्ताक्षर करके इसे जमा करना होगा। इसके साथ निम्नलिखित दस्तावेज़ भी जमा करने होंगे:
+            </li>
+           
+                <li>
+                    Age Proof Certificate: Transfer Certificate, Mark Sheet, Government-Recognized Doctor's Certificate, Driving License, or Passport. <br>
+                    आयु प्रमाण पत्र: स्थानांतरण प्रमाण पत्र, अंक तालिका, सरकारी मान्यता प्राप्त चिकित्सक प्रमाण पत्र, ड्राइविंग लाइसेंस, या पासपोर्ट।
+                </li>
+                <li>
+                    Two passport-sized photographs. <br>
+                    दो पासपोर्ट आकार की तस्वीरें।
+                </li>
+
+                <li>
+                    According to the Factories Act and Rules, the following welfare & benefit schemes are provided to all employees. <br>
+                    फैक्ट्री अधिनियम और नियमों के अनुसार, सभी कर्मचारियों के लिए निम्नलिखित कल्याण और लाभ योजनाएं प्रदान की जाती हैं।
+                </li>
+                <li>
+                    Employees Provident Fund Scheme (EPF)/कर्मचारी भविष्य निधि योजना (ईपीएफ): <br>
+                    PF deduction is made at 12% of Basic + DA, and 13% of contribution is paid by the employer. The government provides interest on the total PF amount. <br>
+                    पीएफ कटौती बेसिक + डीए का 12% होती है, और 13% योगदान नियोक्ता द्वारा दिया जाता है। सरकार कुल पीएफ राशि पर ब्याज प्रदान करती है।
+                </li>
+                <li>
+                    Bonus/बोनस: <br>
+                    Bonus is provided at a rate of 8.33% per year to employees who have completed a minimum of 30 days of service. <br>
+                    30 दिनों की सेवा पूरी करने वाले कर्मचारियों को 8.33% की दर से वार्षिक बोनस दिया जाता है।
+                </li>
+                <li>
+                    Gratuity/ग्रेच्युटी: <br>
+                    Employees who complete a minimum of 5 years of continuous service are eligible for gratuity, calculated at the rate of 15 days' last drawn salary for each year of service. <br>
+                    जो कर्मचारी न्यूनतम 5 वर्षों की निरंतर सेवा पूरी करते हैं, उन्हें प्रत्येक सेवा वर्ष के लिए अंतिम निकाली गई 15 दिनों की सैलरी के आधार पर ग्रेच्युटी का हकदार होता है।
+                </li>
+            </div>
+            <br><br><div class="border border-2 border-dark p-4 bg-white mb-4">
+                <li>
+                    Leave/अवकाश: <br>
+                    a) Employees who complete 240 days in the preceding calendar year are eligible for Earned Leave, calculated as 1 day for every 20 days of service. Unused Earned Leave can be encashed. <br>
+                    पिछले कैलेंडर वर्ष में 240 दिनों की सेवा पूरी करने वाले कर्मचारियों को अर्जित अवकाश का हकदार बनाया जाएगा, जो प्रत्येक 20 दिनों की सेवा पर 1 दिन के हिसाब से होता है। उपयोग न किए गए अर्जित अवकाश को नकद किया जा सकता है। <br>
+                    b) Casual Leave of 10 days is provided yearly to all workers. <br>
+                    सभी कर्मचारियों को प्रति वर्ष 10 दिनों का आकस्मिक अवकाश प्रदान किया जाता है।
+                </li>
+                <li>
+                    Factory Working Hours/फैक्ट्री कार्य घंटे: <br>
+                    Morning: 08:00 AM to 05:00 PM<br>
+                    1st Shift: 07:00 AM to 03:00 PM<br>
+                    2nd Shift: 03:00 PM to 11:00 PM<br>
+                    3rd Shift: 11:00 PM to 07:00 AM<br>
+                    सुबह: 08:00 AM से 05:00 PM<br>
+                    1. शिफ्ट: 07:00 AM से 03:00 PM<br>
+                    2. शिफ्ट: 03:00 PM से 11:00 PM<br>
+                    3. शिफ्ट: 11:00 PM से 07:00 AM
+                </li>
+                <li>
+                    Tea Break/चाय का समय: <br>
+                    Morning: 10:15 AM - 10:30 AM<br>
+                    Afternoon: 05:15 PM - 05:30 PM<br>
+                    सुबह: 10:15 AM - 10:30 AM<br>
+                    दोपहर: 05:15 PM - 05:30 PM
+                </li>
+                <li>
+                    Lunch Break (General Shift Only)/दोपहर का भोजन अवकाश (केवल सामान्य शिफ्ट): <br>
+                    Afternoon: 12:30 PM - 1:30 PM<br>
+                    Shift Workers: 1/2 Hour as per routine.<br>
+                    दोपहर: 12:30 PM - 1:30 PM<br>
+                    शिफ्ट कर्मचारियों के लिए: आधा घंटे का समय।
+                </li>
+                <li>
+                    Overtime/अतिरिक्त समय: <br>
+                    a) Overtime is provided as per the Factories Act, 1948. <br>
+                    फैक्ट्री अधिनियम, 1948 के अनुसार ओवरटाइम दिया जाता है। <br>
+                    b) Double wages (200%) are paid for overtime. <br>
+                    ओवरटाइम के लिए दुगनी मजदूरी (200%) दी जाती है।
+                </li>
+                <li>
+                    Festival Holidays/त्योहार की छुट्टियां: <br>
+                    Paid leave is provided for declared festival holidays, as displayed in the notice board (Form-V). <br>
+                    घोषित त्योहार की छुट्टियों के लिए भुगतान अवकाश दिया जाता है, जैसा कि नोटिस बोर्ड (फॉर्म-V) में प्रदर्शित है।
+                </li>
+                <li>
+                    Disciplinary Action & Termination/अनुशासनात्मक कार्रवाई और समाप्ति: <br>
+                    The rules regarding disciplinary actions and termination have been explicitly mentioned in the standing order. A copy of the standing order has been provided to all section supervisors/incharges and is also displayed on the notice board. <br>
+                    अनुशासनात्मक कार्रवाई और समाप्ति से संबंधित नियम स्थायी आदेश में स्पष्ट रूप से उल्लिखित हैं। स्थायी आदेश की प्रति सभी सेक्शन पर्यवेक्षकों/प्रभारी अधिकारियों को प्रदान की गई है और इसे नोटिस बोर्ड पर भी प्रदर्शित किया गया है।
+                </li>
+                <li>
+                    Retirement/सेवानिवृत्ति: <br>
+                    The retirement age is fixed at 58 years. <br>
+                    सेवानिवृत्ति की आयु 58 वर्ष निर्धारित है।
+                </li>
+                <li>
+                    Notice Period/नोटिस अवधि: <br>
+                    In case of termination of employment or resignation of a permanent employee, a notice period of one month will be required from either party. Casual workers are not entitled to any notice period. <br>
+                    रोजगार समाप्ति या स्थायी कर्मचारी के इस्तीफे के मामले में, दोनों पक्षों को एक महीने की नोटिस अवधि देनी होगी। अस्थायी कर्मचारियों को किसी भी नोटिस अवधि का अधिकार नहीं है।
+                </li>
+        </ol>
+
+       
+        <h6 class="text-center">Employment Agreement/रोजगार समझौता:</h6>
+
+        <div class="my-3">
+            <p>
+                By signing this document, I confirm the following: <br>
+                इस दस्तावेज़ पर हस्ताक्षर करके, मैं निम्नलिखित की पुष्टि करता हूं:
+            </p>
+            <ul>
+                <li>I have not been forced or coerced to apply for this job. <br> इस नौकरी के लिए आवेदन करने के लिए मुझ पर कोई दबाव नहीं डाला गया।</li>
+                <li>I have not paid anyone any money for this job. <br> इस नौकरी के लिए मैंने किसी को पैसे नहीं दिए।</li>
+                <li>I will not share my personal identification documents. <br> मैं अपनी व्यक्तिगत पहचान दस्तावेज़ साझा नहीं करूंगा।</li>
+            </ul>
+        </div>
+
+        <div class="my-3">
+            <p>
+                Additional Details/अतिरिक्त विवरण: <br>
+            </p>
+            <p>Accommodation required: <strong>Yes / No</strong></p>
+            <p>रहने की सुविधा की आवश्यकता है: <strong>हां / नहीं</strong></p>
+            <p>Received a copy of the appointment letter. <br> नियुक्ति पत्र की एक प्रति प्राप्त हुई।</p>
+        </div>
+
+        <div class="d-flex justify-content-between my-4">
+            <div>
+                <p><strong>Employee Signature/कर्मचारी का हस्ताक्षर</strong></p>
+            </div>
+            <div>
+                <p><strong>Manager Signature/प्रबंधक के हस्ताक्षर:</strong></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+
+
+<div class="container my-5">
+    <div class="border border-2 border-dark p-4 bg-white mb-4">
+   
+    <h4 class="text-center">SBT APPARELS PVT LTD </h4>
+    <p class="text-center">S.F.No.132/3, கோபிபாளையம் ரோடு, அலுக்குளி (PO), கோபிசெட்டிபாளையம் (TK), ஈரோடு (DT) – 638 453</p>
+    <h6 class="text-center">Appointment Letter</h6>
+    <h6 class="text-center">பணி நியமன ஆணை</h6>
+        <div class="d-flex justify-content-between">
+            <h6>பெறுநர்</h6>
+            <p><strong>நாள்:</strong>{{employee.pf_date_of_joining}}</p>
+        </div>
+        
+   
+    
+    <p>உமது வேலைக்கான விண்ணப்பம் மற்றும் அதைத் தொடர்ந்த நேர்காணல் அடிப்படையில், நீங்கள் எமது நிறுவனத்தில் {{employee.designation}}ஆக  பணி நியமனம் செய்யப்படுகிறீர்கள். உங்களை எமது நிறுவனத்தில் பணிபுரிய வரவேற்பதில் மகிழ்ச்சியடைகிறோம்.</p>
+
+    <h6>வேலை விதிகள்</h6>
+    <ol>
+        <li>உமது வேலை நேரம் கீழ்க்கண்டவாறு:
+            <ul>
+                <li>காலை 8:00 AM மணி முதல் மாலை 5:00 PM மணி வரை</li>
+            </ul>
+        </li>
+        <li>Shift வேலை நேரங்கள்:
+            <ul>
+                <li>காலை 7:00 AM மணி முதல் மாலை 3:00 PM மணி வரை</li>
+                <li>மாலை 3:00 PM மணி முதல் இரவு 11:00 PM மணி வரை</li>
+                <li>இரவு 11:00 PM மணி முதல் காலை 7:00 AM மணி வரை</li>
+            </ul>
+        </li>
+        <li>ஆறு நாட்களுக்கு ஒருமுறை விடுமுறை வழங்கப்படும்.</li>
+        <li>தமிழ்நாடு தொழில் நிறுவனங்கள் (பணியாளர் நிரந்தரமாக்கப்படுதல்) சட்டம் 1981-ன்படி, பணியில் சேர்ந்த நாள் முதல் நீங்கள் நிறுவனத்தின் நிரந்தர ஊழியராக பணி நியமனம் செய்யப்படுகிறீர்கள்.</li>
+        <li>உமது ஊதியம் சம்பள பட்டுவாடா சட்டம் 1936 மற்றும் குறும ஊதியச் சட்டம் 1948 அடிப்படையில் நிர்ணயம் செய்யப்படுகிறது. உமது தினசரி மாதாந்திர ஊதியம்: ரூ. {{ wages.per_day }}/-</li>
+        <li>ஊதியம் பிரதிமாதம் 7-ஆம் தேதிக்குள் வழங்கப்படும். மிகை நேர வேலைகளுக்கு தொழிற்சாலைகள் சட்டம் 1948-ன்படி இரட்டிப்பு ஊதியம் வழங்கப்படும்.</li>
+        <li>தொழிலாளர் அரசு காப்பீடு சட்டம் (ESI) 1948 மற்றும் தொழிலாளர் வருங்கால வைப்புநிதி சட்டம் (PF) 1952 விதிகளின்படி, உமது ஊதியத்தில் பிடித்தம் செய்யப்பட்டு அத்தோடு நிறுவனத்தின் பங்கையும் சேர்த்து காப்பீடு மற்றும் வைப்புநிதி கணக்கில் செலுத்தப்படும்.</li>
+        <li>போனஸ் வழங்கல் சட்டம் 1965-ன்படி குறைந்தபட்ச ஊக்கத் தொகை 8.33% உத்தரவாதமாக வழங்கப்படும்.</li>
+        <li>ஐந்தாண்டு தொடர்ச்சி பணிக்குப் பின் பணிக்கொடை வழங்கல் சட்டம் 1972-ன்படி கௌரவிக்கப்படும்.</li>
+        <li>தமிழ்நாடு தொழில் நிறுவனங்களின் தேசிய மற்றும் பண்டிகை விடுமுறைகள் சட்டம் 1958-ன் அடிப்படையில் பொதுவிடுமுறை, ஈட்டிய விடுப்பு, மருத்துவ விடுப்பு போன்றவை வழங்கப்படும்.</li>
+        <li>பணி நிரந்தரத்திற்குப் பின், நிர்வாகம் உங்களை நீக்குவதாக இருந்தால் ஒரு மாத முன்னறிவிப்பு (அல்லது) ஒரு மாத ஊதியம் வழங்கப்படும். நீங்கள் வேலையை விட்டு செல்ல நேரிட்டால், ஒரு மாத முன்னறிவிப்பு அவசியம் அளிக்க வேண்டும்.</li>
+        <li>பணியில் ஈடுபாடின்மை, தொழிலாளர் நிலை ஆணைகள் அவமதித்தல், நிறுவன விதிகள் மீறல் போன்ற செயல்களுக்கு நிர்வாகம் ஒழுங்கு நடவடிக்கை எடுக்கலாம்.</li>
+        <li>நிர்வாகம் சாதி, இனம், மதம், நிறம், பாலினம் போன்ற பாகுபாடுகள் அனுமதிக்காது. எந்தவித பாகுபாடு கண்ணுற்றால் நிர்வாகத்தின் பார்வைக்கு உடனே கொணருதல் உங்கள் கடமையாகும்.</li>
+        <li>பணியாளர் சங்கம் சம்பந்தமான உரிமைகள் தமிழ் தொழில் சங்க சட்டத்தின் கீழ் மதிக்கப்படும்.</li>
+        <li>58 வயதில் பணி மூப்பு பெறுவீர்கள்.</li>
+        <li>படித்து/படிக்க கேட்டு புரிந்து கொண்டேன்</li>
+    </ol>
+
+   
+       
+
+  
+
+        <div class="d-flex justify-content-between">
+            <h6 class="text-center">வேலை விருப்ப தீர்மானம்</h6>
+        </div>
+    
+        <div class="my-3">
+            <p>இந்த விண்ணப்பத்தில் கையெழுத்திடுவதின் மூலம் நான் அதை உறுதிப்படுத்துகிறேன்.</p>
+            <p>இந்த வேலைக்கு விண்ணப்பிக்க நான் கட்டாயப்படுத்தப்படவில்லை அல்லது நிர்பந்தப்படுத்தப்படவில்லை.</p>
+            <p>இந்த வேலைக்காக யாருக்கும் பணம் செலுத்தவில்லை.</p>
+            <p>என்னுடைய சொந்த அடையாள ஆவணங்களுக்கு நான் அணுகல் கொடுக்கவுமில்லை கொடுக்கப் போவதுமில்லை.</p>
+            <p>அனைத்து மிக நேர வேலையும் மனமார்ந்தது என்பதை நான் புரிந்து கொண்டேன்.</p>
+        </div>
+    
+        <div class="my-3">
+            <p><strong>மற்ற விபரங்கள்:</strong></p>
+            <p>நான் வேலை பார்க்கும் போது தங்கும் வசதி எனக்கு தேவைப்படுகிறது. <strong>ஆம் / இல்லை</strong></p>
+            <p>பணி நியமன ஆணை நகலை பெற்றுக்கொண்டேன்</p>
+        </div>
+    
+        <div class="d-flex justify-content-between my-4">
+            <div>
+                <p><strong>தொழிலாளர் கையெழுத்து</strong></p>
+            </div>
+            <div>
+                <p><strong></p>
+            </div>
+        </div>
+    
+        <div class="d-flex justify-content-between my-4">
+            <div>
+                <p><strong>இவரால் பெற்றுக் கொள்ளப்பட்டது</strong><br>
+                    <strong>{{employee.employee_name}}</strong></p>
+            </div>
+            <div>
+                <p><strong></strong></p>
+            </div>
+
+            <p>மேலாளர் கையொப்பம்: ___________________________</p>
+        </div>
+        </div>
+    </div>
+    
+<br><br><br><br><br>
+    <div class="container my-5">
+        <div class="border border-2 border-dark p-4 bg-white mb-4">
+        <h4  class="text-center">VASANTHA Advanced Systems</h4>
+        <p class="text-center">S.F.No.132/3, கோபிபாளையம் ரோடு, அலுக்குளி (PO), கோபிசெட்டிபாளையம் (TK), ஈரோடு (DT) – 638453</p>
+    
+        <h7><strong>தொழிலாளர்கள் கடைபிடிக்க வேண்டிய விதிகள் மற்றும் ஒழுங்குமுறைகள்</strong></h7>
+            <ul>
+                <li>தொழிலாளர்கள் தாங்கள் வேலை செய்யும் இடத்தையும், இயந்திரங்களையும் சுத்தமாக வைத்திருத்தல் அவசியம்</li>
+                <li>அவர்கள் தங்கள் பணி ஆரம்பிக்கும் முன்னர் கைகளை மிகவும் சுத்தமாக வைத்திருத்தல் அவசியம்</li>
+                <li>தொழிற்சாலைக்குள் புகைப்பிடித்தல் கண்டிப்பாகத் தடை செய்யப்பட்டுள்ளது</li>
+                <li>தொழிலாளர்கள் பணிமுடிவடைந்தவுடன் இணைப்பு பாகங்களை பராமரிப்பு பிரிவினரிடம் திருப்பிக் கொடுக்க வேண்டும்</li>
+                <li>இடைவேளையின் போதும் பணி முடிந்து செல்லும் போதும் மின் விளக்குகளையும், மின் விசிறிகளையும் நிறுத்தி விட வேண்டும்</li>
+                <li>ஒவ்வொருவரும் அனுதினமும் தங்கள் அடையாள அட்டையையும் தவறாது அணிந்து வருதல் வேண்டும்</li>
+                <li>சுற்றுப்புறத்தை சுத்தமாக வைத்தல் வேண்டும். குப்பைகளை சிற்றுண்டிச்சாலை அருகிலும், கழிவறைக்குப் பக்கத்திலும் அதற்காக வைத்திருக்கும் தொட்டிகளில் போட வேண்டும்</li>
+                <li>ஆஃப்ரேட்டர்கள் தங்களுக்கு குறிப்பிட்டுள்ள அளவு வேலையை இயன்றவரை சிரத்தையுடன் முடிக்க செயல்பட வேண்டும்</li>
+                <li>ஆப்ரேட்டர்கள் தங்களுக்கு மேலாக உள்ள மேற்பார்வையாளர்களுக்கு பதில் சொல்ல கடமைப்பட்டவர்கள் ஆவர்</li>
+                <li>நிர்வாகத்தினர் கீழ்கண்ட காரணங்களுக்காக தொழிலாளர்கள் மீது நடவடிக்கை எடுக்க உரிமையுண்டு:</li>
+                <ul>
+                    <li>நடைமுறை விதிகளை மீறும் போது</li>
+                    <li>தொழிற்சாலைக்குள் அவசயமின்றி சுற்றித்திரிந்தாலும் தேவையற்ற பேச்சுகளில் ஈடுபட்டாலும்</li>
+                    <li>நேரம் தவறி வருதல், முன் அனுமதி பெறாமல் வேலைக்கு வராமல் நின்றுவிடுவது மற்றும் வேலைக்கு வருவதில் ஒழுங்கின்மை</li>
+                </ul>
+            </ul>
+            
+        
+        <div class="d-flex justify-content-between">
+            <!-- Left side content -->
+            <div class="left-content">
+                <h6>பணி நேரம்</h6>
+                <p>
+                    <ul>
+                        <li>காலை 08:00 AM - 05:00 PM</li>
+                        <li>காலை 07:00 AM - 03:00 PM</li>
+                        <li>மதியம் 03:00 PM - 11:00 PM</li>
+                        <li>இரவு 11:00 PM - 07:00 AM</li>
+                    </ul>
+                </p>
+            </div>
+    
+            <!-- Right side content -->
+            <div class="right-content text-right">
+                <h6>இடைவேளைகள்</h6>
+                <p>
+                    <strong>தேனீர் இடைவேளை:</strong> 15 நிமிடம்<br>
+                    <strong>மதிய உணவு இடைவேளை:</strong> 30 நிமிடம்
+                </p>
+            </div>
+           
+        </div>
+    
+        
+        <br><br><br>
+    
+    
+        <div class="d-flex justify-content-between">
+        
+            
+           
+                <!-- Left side content -->
+                <div class="left-signature">
+                    <p>தொழிலாளர் கையொப்பம்: _________________________</p>
+                </div>
+        
+                <!-- Right side content -->
+                <div class="right-signature text-right">
+                    <p>மேலாளர் கையொப்பம்: _________________________</p>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+
+{% endif %}
+            <div style="margin-top: 800px;"></div>
+            <br><br><br><br><br>
+            <div class="container my-5">
+                <div class="border border-2 border-dark p-4 bg-white mb-4">
+                
+                
+                <div class="text-center">
+                    <h6 class="mb-3">பணியாளரின் உறுதி மொழி படிவம்</h6>
+                    <p><strong>தேதி:</strong> {{employee.pf_date_of_joining}}</p>
+                    <p><strong>பெறுநர்:</strong> நிர்வாக இயக்குநர்</p>
+                    <p><strong>VASANTHA Advanced Systems</strong></p>
+                    <p>S.F.NO.131,132 & 137, GOBIPALAYAM ROAD, ALUKKULI(PO),<br>
+                    GOBICHETTIPALAYAM(TK), ERODE (DT) - 638453.</p>
+                </div>
+                
+                <div class="mt-4">
+                    <p>{{ employee.employee_name }} ஆகிய நான் {{employee.department}}பிரிவில் பணியாற்றி வருகிறேன் மேலும்,</p>
+                    <p>எனது சொந்த விருப்பத்தின் பேரில் மனமுவந்து வேலைக்கு வந்து கொண்டிருக்கிறேன் 
+                       யாருடைய நிர்பந்தமும் இன்றி இந்த பணியில்தொடர்ந்து வேலை செய்வேன்.</p>
+                    <p>நிர்வாகத்திற்கு சொந்தமான பொருள்கள் எதையும் சேதப்படுத்தாமலும் நிர்வாகத்திற்கு 
+                       எந்த ஒரு இழப்பும் ஏற்படாமலும் நடந்து கொள்வேன்.</p>
+                    <p>* பணிகாலத்தில் நிர்வாகத்தின் சுற்றுப்புறசூழலுக்கு கேடு விளைவிக்காமல் 
+                       நடந்து கொள்வேன்.</p>
+                    <p>நிர்வாகத்தின் விதிமுறை மற்றும் ஒழுங்கு முறைகளுக்கு இணங்கி வருவதோடு, 
+                       போதைபொருள் ஒழிப்பு கொள்கையையும் பின் பற்றி வருவேன்.</p>
+                    <p>* உடன் பணிபுரியும் தொழிலாளர்களின் மனம் புண்படும்படி கடும்சொல் கூறாமலும் 
+                       சட்ட விரோதமான எந்த ஒரு நடவடிக்கைகளிலும் ஈடுபடமாட்டேன்.</p>
+                    <p>மேலும் தொழிற்சாலையில் பணி புரியும் தொழிலாளர்களிடம் எந்த ஒரு 
+                       பாலியல் பலாத்காரம் போன்ற தவறான செயல்களில் ஈடுபடமாட்டேன்.</p>
+                    <p>மேலே குறிப்பிட்டுள்ள அனைத்து விதிமுறைகளுக்கும் கீழ்பணிந்து 
+                       நடந்து கொள்வேன் என்று தங்களுக்கு தாழ்மையுடன் 
+                       தெரிவித்துக்கொள்வதோடு உறுதியும் அளிக்கிறேன்.</p>
+                </div>
+                
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <p><strong>பெயர்:</strong> {{ employee.employee_name }}</p>
+                        <p><strong>Employee Code:</strong> {{ employee.employee_code }}</p>
+                    </div>
+                    <div class="col-6 text-end">
+                        <p><strong>தொழிலாளர் கையொப்பம்:</strong> ____________________</p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+
+
+
+
+            
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <div class="container my-5">
+                <div class="border border-2 border-dark p-4 bg-white mb-4">
+        <div class="text-center mb-4">
+            <h6>தமிழ்நாடு தொழிற்சாலை விதிகள் 1950</h6>
+            <p><strong>படிவம் எண்: 34</strong></p>
+            <p>(நிர்ணயிக்கப்பட்ட விதி 93)</p>
+        </div>
+
+        <div class="mb-4">
+            <p>நான் பணியிலுள்ள போது இறக்க நேரிட்டால் எனது ஊதிய நிலுவை மற்றும் 
+               விடுப்பு கால ஊதியத்தை <strong>{{employee.nominee_name}}</strong> எனது{{employee.nominee_relationship}}
+               முகவரி <strong>{{employee.address_1 }},
+                {{employee.street}},
+                {{employee.city }},
+                
+                {{employee.state }},
+                {{employee.pincode }} ,
+                {{employee.district }},</strong> செலுத்துமாறு கேட்டுக்கொள்கிறேன்.</p>
+        </div>
+
+        <div class="mb-4">
+            <h6>சாட்சிகள்:</h6>
+            <p>1. _________________________</p>
+            <p>2. _________________________</p>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-6">
+                <p><strong>தொழிலாளர் கையொப்பம்:</strong> ____________________</p>
+            </div>
+        </div>
+
+        <hr class="my-5">
+
+        <div class="text-center mb-4">
+            <h6>Tamil Nadu Factory Rules 1950</h6>
+            <p><strong>Form No: 34</strong></p>
+            <p>(Prescribed under rule 93) Nomination</p>
+        </div>
+
+        <div class="mb-4">
+            <p>I hereby require that in the event of my death before resuming work, the balance of my pay due for the period 
+            of leave with wages not availed of shall be paid to <strong>{{employee.nominee_name}}</strong>, {{employee.nominee_relationship}} is my  resides at 
+               <strong>{{employee.address_1 }},
+                {{employee.street}},
+                {{employee.city }},
+                
+                {{employee.state }},
+                {{employee.pincode }} ,
+                {{employee.district }},</strong>.</p>
+        </div>
+
+        <div class="mb-4">
+            <h6>Witness:</h6>
+            <p>1. _________________________</p>
+            <p>2. _________________________</p>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-6">
+                <p><strong>Signature of Worker:</strong> ____________________</p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div style="margin-top: 700px;"></div>
+ <!-- Form F -->
+ <div class="container my-5">
+    <div class="border border-2 border-dark p-4 bg-white mb-4">
+        <h5 class="text-center mb-4">FORM 'F'</h5>
+        <p class="text-center">(See sub-rule (1) of Rule 6 - Nomination)</p>
+
+        <div class="mb-4">
+            <p><strong>To:</strong> (Give here name or description of the establishment with full address)</p>
+            <p>VASANTHA Advanced Systems</p>
+            <p>S.F.NO.131,132 & 137, GOBIPALAYAM ROAD, ALUKKULI (PO),</p>
+            <p>GOBICHETTIPALAYAM (TK), ERODE (DT) - 638453.</p>
+        </div>
+
+        <div class="mb-4">
+            <p>1. Shri/Shrimati/Kumari <strong>{{ employee.employee_name }}</strong>, whose particulars are given in the statement below, hereby nominate the person(s) mentioned below to receive the gratuity payable after my death as also the gratuity standing to my credit in the event of my death before that amount has become payable, or having become payable has not been paid, and direct that the said amount of gratuity shall be paid in proportion indicated against the name(s) of the nominee(s).</p>
+        </div>
+
+        <div class="mb-4">
+            <p>2. I hereby certify that the person(s) mentioned is/are a member(s) of my family within the meaning of clause (h) of Section 2 of the Payment of Gratuity Act, 1972.</p>
+            <p>3. I hereby declare that I have no family within the meaning of clause (h) of Section 2 of the said Act.</p>
+            <p>4. (a) My father/mother/parents is/are not dependent on me.</p>
+            <p>    (b) My husband's father/mother/parents is/are not dependent on my husband.</p>
+            <p>5. I have excluded my husband from my family by a notice dated the</p>
+            <p>6. Nomination made herein invalidates my previous nomination.</p>
+        </div>
+
+        <h6 class="mb-3">Nominee(s)</h6>
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th>NAME IN FULL WITH FULL ADDRESS OF NOMINEE(S)</th>
+                    <th>RELATIONSHIP WITH THE EMPLOYEE</th>
+                    <th>AGE OF NOMINEE</th>
+                    <th>PROPORTION BY WHICH THE GRATUITY WILL BE SHARED</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{employee.nominee_name}}</td>
+                    <td>{{employee.nominee_relationship}}</td>
+                    <td>{{employee.nominee_age}}</td>
+                    <td>100%</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h6 class="mb-3">Statement</h6>
+        <table class="table ">
+            <tbody>
+                <tr>
+                    <th>1. Name of employee in full</th>
+                    <td>{{ employee.employee_name }}</td>
+                </tr>
+                <tr>
+                    <th>2.Gender</th>
+                    <td>{{employee.gender}}</td>
+                </tr>
+                
+                <tr>
+                    <th>3. Whether unmarried/married/widow</th>
+                    <td>{{employee.marital_status}}</td>
+                </tr>
+                <tr>
+                    <th>4. Department/Branch/Section where employed</th>
+                    <td>{{employee.department}}</td>
+                </tr>
+                <tr>
+                    <th>5. Post held with Ticket No. or Serial No.</th>
+                    <td>{{ employee.employee_code }}</td>
+                </tr>
+                <tr>
+                    <th>6. Date of appointment</th>
+                    <td>{{employee.pf_date_of_joining }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="row mt-5">
+            <div class="col-6">
+                <p><strong>Signature of Employee:</strong> ____________________</p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div style="margin-top: 300px;"></div>
+    <!-- Permanent Address and Declaration -->
+    <div class="container my-5">
+        <div class="border border-2 border-dark p-4 bg-white mb-4">
+       
+        <div class="mb-4">
+            <h6>Permanent Address</h6>
+            <p><strong>Village:</strong>  {{employee.address_1 }}</p>
+            <p><strong>Post Office:</strong> {{employee.street}}</p>
+            <p><strong>Taluk:</strong>  {{employee.city }}</p>
+            <p><strong>District:</strong> {{employee.district }}</p>
+           
+            <p><strong>State:</strong>  {{employee.state }}U</p>
+            <p><strong>PinCode:</strong> {{employee.pincode }}</p>
+           
+            
+                      
+        </div>
+
+        <div class="mb-4">
+            <p><strong>Place:</strong> _____________________________________</p>
+            <p><strong>Date:</strong> _____________________________________</p>
+            <p><strong>Signature/Thumb-impression of the Employee:</strong> ____________________</p>
+        </div>
+        <br><br><br><br><br>
+        <h6 class="text-center">Declaration by Witnesses</h6>
+        <div class="mb-4">
+            <p>Nomination signed/thumb-impressed before me.</p>
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th>Name in full and full address of witnesses</th>
+                        <th>Signature of Witnesses</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>_____________________________________</td>
+                        <td>_____________________________________</td>
+                    </tr>
+                    <tr>
+                        <td>_____________________________________</td>
+                        <td>_____________________________________</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p><strong>Place:</strong> _____________________________________</p>
+        <p><strong>Date:</strong> _____________________________________</p>
+
+        <h6 class="text-center">Certificate by the Employer</h6>
+        <div class="mb-4">
+            <p>Certified that the particulars of the above nomination have been verified and recorded in this establishment.</p>
+            <p><strong>Employer's Reference No:</strong> {{ employee.employee_code }}</p>
+            <p><strong>Date:</strong>{{employee.pf_date_of_joining}}</p>
+            <p><strong>Name and address of the establishment or rubber stamp:</strong> _____________________________________</p>
+            <p><strong>Signature of the employer/Officer authorized:</strong> ____________________</p>
+            <p><strong>Designation:</strong> {{employee.designation}}</p>
+        </div>
+
+        <h6 class="text-center">Acknowledgement by the Employee</h6>
+        <div class="mb-4">
+            <p>Received the duplicate copy of the nomination in Form filled by me and duly certified by the employer.</p>
+            <p><strong>Date:</strong>{{employee.pf_date_of_joining}}</p>
+            <p><strong>Signature of the Employee:</strong> ____________________</p>
+        </div>
+
+        <div class="mb-5">
+            <p><strong>Note:</strong> Strike out the words/paragraphs not applicable.</p>
+        </div>
+    </div>
+    </div>
+    <div style="margin-top: 500px;"></div>
+    <!-- Training Details Table -->
+    <div class="container my-5">
+        <div class="border border-2 border-dark p-4 bg-white mb-4">
+        <h5 class="mt-4 mb-4 text-center">Training Details Table</h5>
+         
+        <h6 class="mt-4 mb-4 text-center"> பணியாளர் பயிற்சி விவரங்கள்  </h6>
+
+        <table >
+            <thead>
+                <tr>
+                    <th>S.NO / வ எண்</th>
+                    <th>Details of Training / பயிற்சியின் பெயர் மற்றும் விபரங்கள்</th>
+                    <th>In-House/External</th>
+                    <th>Actual Training Date / பயிற்சியளித்த தேதி</th>
+                    <th>Trainer's Sign / பயிற்சி அளித்தவர் கையொப்பம்</th>
+                    <th>Trainee's Sign / பயிற்சி பெற்றவர் கையொப்பம்</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Training terms & condition of appointment, Personal policy, Various policies <br> நியமனக் கடிதத்திலுள்ள நிபந்தனைகள், தொழிலாளர் கொள்கை மற்றும் பிற கொள்கைகளின் விளக்கப்பயிற்சி</td>
+                    <td>In-House</td>
+                    <td>_________________</td>
+                    <td>_________________</td>
+                    <td>_________________</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Safety Awareness, First Aid Kit Training, Fire Extinguisher, Emergency Contacts <br> பாதுகாப்பு விழிப்புணர்வு பயிற்சி, முதலுதவி பயிற்சி நபர்கள் தீயணைப்பான், <br>அவசரகால வழி,அவசர காலத்தில் தொடர்பு கொள்ள வேண்டிய நபர்கள்  </td>
+                    <td>In-House</td>
+                    <td>______________</td>
+                    <td>______________</td>
+                    <td>______________</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Personal Protective Equipments Usage Awareness <br> தனி நபர் பாதுகாப்பு சாதனங்கள் பற்றிய விழிப்புணர்வு பயிற்சி</td>
+                    <td>In-House</td>
+                    <td>_______________</td>
+                    <td>_______________</td>
+                    <td>_______________</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>First Aid Training / முதலுதவி பயிற்சி</td>
+                    <td>In-House</td>
+                    <td>______________</td>
+                    <td>______________</td>
+                    <td>______________</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Awarnees on Buyer's Code of Conduct Training <br> கொடுப்பனர்களின் கொள்கை <br> விளக்கப்பயிற்சி</td>
+                    <td>In-House</td>
+                    <td>____________</td>
+                    <td>____________</td>
+                    <td>____________</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>General Health, Training & House Keeping <br> பொது சுகாதாரம் மற்றும் <br> சுற்றுப்புற தூய்மைப் பயிற்சி</td>
+                    <td>In-House</td>
+                    <td>____________</td>
+                    <td>____________</td>
+                    <td>____________</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>SA 8000-2014 STANDARD</td>
+                    <td>In-House</td>
+                    <td>_____________</td>
+                    <td>_____________</td>
+                    <td>_____________</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+<div>
+    <div>
+        <div style="margin-top: 700px;"></div>
+        <!-- Training Details Table -->
+        <div class="container my-5">
+            <div class="border border-2 border-dark p-4 bg-white mb-4">
+        
+                <!-- Company Header -->
+                <div class="text-center">
+                    <h4><strong>VASANTHA Advanced Systems</strong></h4>
+                    <p>S.F.NO.131, 132 & 137, GOBIPALAYAM ROAD, ALUKKULI(PO), GOBICHETTIPALAYAM(TK), ERODE (DT) - 638453.</p>
+                    <h5>WAGES HISTORY</h5>
+                    <h6>ஊதிய விபரம்</h6>
+                </div>
+        
+                <!-- Employee Details -->
+                <div class="employee-details my-4 border-bottom">
+                    <div class="d-flex font-weight-bold">
+                        <div class="col">Employee Name</div>
+                        <div class="col">Designation</div>
+                        <div class="col">Date of Joining</div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col">{{ employee.employee_name }}</div>
+                        <div class="col">{{ employee.designation }}</div>
+                        <div class="col">{{ employee.pf_date_of_joining }}</div>
+                    </div>
+                </div>
+        
+                <!-- Wage History -->
+                <div class="wage-history my-4">
+                    <div class="d-flex font-weight-bold border-bottom">
+                        <div class="col">Period</div>
+                        <div class="col">Per Day Wage</div>
+                        <div class="col">Basic</div>
+                        <div class="col">DA</div>
+                        <div class="col">HRA</div>
+                        <div class="col">Other Allowance</div>
+                        <div class="col">PF (%)</div>
+                        <div class="col">ESI (%)</div>
+                        <div class="col">Manager Sign</div>
+                    </div>
+        
+                    {% for wage in wage_history_data %}
+                    <div class="d-flex border-bottom">
+                        <div class="col">{{ wage.start_date }} to {{ wage.end_date }}</div>
+                        <div class="col">{{ wage.per_day_wage }}</div>
+                        <div class="col">{{ wage.basic_amount }}</div>
+                        <div class="col">{{ wage.da_amount }}</div>
+                        <div class="col">{{ wage.hra_amount }}</div>
+                        <div class="col">{{ wage.other_allowance }}</div>
+                        <div class="col">{{ employee.pf_percentage }}</div>
+                        <div class="col">{{ employee.esi_percentage }}</div>
+                        <div class="col"></div> <!-- Placeholder for Manager's signature -->
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+
+ </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

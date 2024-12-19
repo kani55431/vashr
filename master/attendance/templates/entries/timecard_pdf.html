@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Time Card PDF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            width: 100%;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .header-section div {
+            text-align: center;
+        }
+        .header-section div h6 {
+            margin: 0;
+        }
+        .employee-details, .additional-info {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .summary {
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Time Card Monthly Consolidated Report</h1>
+
+        {% for record in attendance_data %}
+        <div class="header-section">
+            <div>
+                <h6>SBT APPARELS PVT LTD</h6>
+            </div>
+            <div>
+                <h6>Time Card Attendance Details Report Form</h6>
+                <p>Time Card Monthly Consolidated Report</p>
+                <p>Form 25 B. see Rule 103</p>
+                <p>License No: TPR12959</p>
+            </div>
+            <div>
+                <p>DOJ: {{ record.employee_name }}</p>
+                <p>Normal Wages: Shift</p>
+                <p>OT: Double The Wage</p>
+            </div>
+        </div>
+
+        <div class="additional-info">
+            <p>Working Hours: {{ record.category }} Hours</p>
+            <p>Date: {{ month }}</p>
+        </div>
+
+        <div class="employee-details">
+            <p><strong>Employee Name:</strong> {{ record.employee_name }}</p>
+            <p><strong>Department:</strong> {{ record.department }}</p>
+            <p><strong>Employee Code:</strong> {{ record.employee_code }}</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Attn Date</th>
+                    <th>In Time</th>
+                    <th>Out Time</th>
+                    <th>Whrs</th>
+                    <th>OT Hrs</th>
+                    <th>Shift</th>
+                    <th>Present</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for day in record.attendance %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ day.date }}</td>
+                    <td>{{ day.intime }}</td>
+                    <td>{{ day.outtime }}</td>
+                    <td>{{ day.total_working_hours }}</td>
+                    <td>{{ day.ot_hours }}</td>
+                    <td>{{ day.shift }}</td>
+                    <td>{{ day.absent }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">No attendance records found for this employee.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="summary">
+            <p>Total Present: {{ record.present_days }}.00, Total OT Hours: {{ record.total_ot_hours }}.00, Total Holidays: 0.00, Total Absent: {{ record.absent_days }}.00</p>
+        </div>
+
+        {% endfor %}
+
+    
+    </div>
+</body>
+</html>

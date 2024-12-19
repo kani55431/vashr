@@ -1,0 +1,206 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate - Bank Salary Report</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+    
+    <style>
+        /* Custom CSS for table borders */
+        table.table-bordered {
+            border: 2px solid black;
+        }
+        table.table-bordered th,
+        table.table-bordered td {
+            border: 1px solid black;
+        }
+        .table-responsive {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'body/audit_header.html' %}
+    {% include 'body/audit_sidebar.html' %}
+    
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Generate - Bank Salary Report</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="header">
+                                    <form method="post" action="{% url 'bank_details_pf_salary' %}">
+                                        {% csrf_token %}
+                                        {{ form.as_p }}
+                                        <button type="submit" name="get" class="btn btn-primary">Get Salary Details</button>
+                                    </form>
+                                </div>
+                                
+                               
+                              
+                                <div class="table-responsive">
+                                    {% if salary_details %}
+                                    <button onclick="printTable()" class="btn btn-secondary">Print</button>
+                                <br>
+                                    <input type="text" id="myInput" onkeyup="filterTable('myInput', 'dataTable')" placeholder="Search for something..." class="form-control mb-3" style="width: 300px;">
+                                <br>    
+                                     <!-- Download Links for Excel and PDF -->
+                                <div class="mb-3">
+                                    <a href="{% url 'bank_audit_pf_salary_excel' %}" class="btn btn-warning">
+                                        <i class="fas fa-file-excel"></i> Download Excel
+                                    </a>
+                                </div>
+                                
+                                        <table class="table table-bordered table-bordered-bd-primary" id="dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th rowspan="2">Sl. No</th>
+                                                    <th rowspan="2">Employee Code</th>
+                                                    <th rowspan="2">Name</th>
+                                                    <th rowspan="2">Bank</th>
+                                                    <th rowspan="2">Account Number</th>
+                                                    <th rowspan="2">IFSC</th>
+                                                    <th rowspan="2">Branch</th>
+                                                    <th rowspan="2">Net Salary</th>
+                                                    <th rowspan="2">Sign</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for detail in salary_details %}
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ detail.employee_code }}</td>
+                                                        <td>{{ detail.name }}</td>
+                                                        <td>{{ detail.bank }}</td>
+                                                        <td>{{ detail.account_no }}</td>
+                                                        <td>{{ detail.ifsc_code }}</td>
+                                                        <td>{{ detail.branch }}</td>
+                                                        <td>{{ detail.net_salary }}</td>
+                                                        <td></td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="7" style="text-align: right;"><strong>Total:</strong></td>
+                                                    <td>{{ total_net_salary }}</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        function printTable() {
+            var printWindow = window.open('', '', 'height=800,width=1000');
+            printWindow.document.write('<html><head><title>Attendance Details  Print Table</title>');
+            printWindow.document.write('<style>body { font-family: Arial, sans-serif; }');
+            printWindow.document.write('.printable-table { width: 100%; margin: auto; border-collapse: collapse; }');
+            printWindow.document.write('table { border-collapse: collapse; width: 100%; }');
+            printWindow.document.write('th, td { border: 1px solid #333; padding: 6px; text-align: left; }');
+            printWindow.document.write('th { background-color: #f2f2f2; }');
+            printWindow.document.write('@page { size: landscape; margin: 10mm; }');
+            printWindow.document.write('</style></head><body>');
+            printWindow.document.write('<div style="text-align: center; margin-bottom: 20px;">');
+            printWindow.document.write('<h2><strong>Vasantha Advanced Systems</strong></h2>');
+            printWindow.document.write('<h3><strong>Bank Salary Details Of  {{ selected_month }}</strong></h3>');
+            printWindow.document.write('</div>');
+            printWindow.document.write('<table class="printable-table">');
+            printWindow.document.write('<thead><tr><th>S.No</th><th>Employee Code</th><th>Employee Name</th><th>Bank</th><th>Account Number </th><th>IFSC </th><th>Branch</th><th>Net Salary</th><th>Sign</th></tr></thead><tbody>');
+    
+           
+            
+    
+            // Write the table rows
+            {% for detail in salary_details %}
+                printWindow.document.write('<tr>');
+                printWindow.document.write('<td>{{  detail.sl_no }}</td>');
+                printWindow.document.write('<td>{{ detail.employee_code }}</td>');
+                printWindow.document.write('<td>{{ detail.name }}</td>');
+           
+                
+                printWindow.document.write('<td>{{ detail.bank }}</td>');
+
+                printWindow.document.write('<td>{{ detail.account_no }}</td>');
+                printWindow.document.write('<td>{{ detail.ifsc_code  }}</td>');
+                printWindow.document.write('<td>{{ detail.branch }}</td>');
+                printWindow.document.write('<td>{{ detail.net_salary}}</td>');
+                printWindow.document.write('<td></td>');
+                printWindow.document.write('</tr>');
+            {% endfor %}
+            printWindow.document.write('<tr>  <td colspan="7" style="text-align: right;"><strong>Total:</strong></td><td>{{ total_net_salary }}</td><td></td> </tr></thead><tbody>');
+            printWindow.document.write('</tbody></table>');
+            printWindow.document.write('</body></html>');
+    
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+        }
+    </script>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.form-control').select2();
+        });
+
+        function filterTable(inputId, tableId) {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById(inputId);
+            filter = input.value.toLowerCase();
+            table = document.getElementById(tableId);
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = "none";
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.form-control').select2();
+        });
+    </script>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

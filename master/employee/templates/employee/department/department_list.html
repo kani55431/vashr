@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Department List</title>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- SIDE BAR -->
+        
+        {% include 'body/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                 <!-- Topbar -->
+
+            
+                
+                {% include 'body/header.html' %}
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Department List</h2>
+                        <a href="{% url 'department_create' %}" class="btn btn-primary">Add New Department</a>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-bordered-bd-primary">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for department in departments %}
+                                <tr>
+                                    <td>{{ department.id }}</td>
+                                    <td>{{ department.name }}</td>
+                                    <td>{{ department.category.name }}</td>
+                                    <td>
+                                        <a href="{% url 'department_edit' department.id %}" class="btn btn-warning btn-sm">Edit</a>
+                                        <a href="{% url 'department_delete' department.id %}" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4">No departments found.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

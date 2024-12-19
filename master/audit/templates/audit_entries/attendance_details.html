@@ -1,0 +1,133 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adjustment Entry</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+</head>
+<body>
+    {% include 'body/audit_header.html' %}
+    {% include 'body/audit_sidebar.html' %}
+
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Attendance Details for {{ date_obj }}</div>
+                        </div>
+                        <div class="card-body">
+                           
+                           
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Details</title>
+</head>
+<body>
+
+
+
+    <table class="table table-striped table-hover" id="dataTable">
+        <thead>
+            <tr>
+                <th><input type="text" id="empCodeInput" placeholder="Search Employee Code" onkeyup="filterTable('empCodeInput', 0)"></th>
+                <th><input type="text" id="empNameInput" placeholder="Search Employee Name" onkeyup="filterTable('empNameInput', 1)"></th>
+                <th><input type="text" id="categoryInput" placeholder="Search Category" onkeyup="filterTable('categoryInput', 2)"></th>
+                <th><input type="text" id="departmentInput" placeholder="Search Department" onkeyup="filterTable('departmentInput', 3)"></th>
+                <th><input type="text" id="abpInput" placeholder="Search AB/P" onkeyup="filterTable('abpInput', 4)"></th>
+                <th>Actions</th>
+            </tr>
+            <tr>
+                <th>Employee Code</th>
+                <th>Employee Name</th>
+                <th>Category</th>
+                <th>Department</th>
+                <th>AB/P</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in attendance_records %}
+                <tr>
+                    <td>{{ record.employee.employee_code }}</td>
+                    <td>{{ record.employee.employee_name }}</td>
+                    <td>{{ record.employee.category }}</td>
+                    <td>{{ record.employee.department }}</td>
+                    <td>{{ record.absent }}</td>
+                    <td>
+                        <form method="post" action="{% url 'audit_adjustment_entry_view' date=date_obj %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="employee_code" value="{{ record.employee.employee_code }}">
+                            <select name="absent">
+                                <option value="AB" {% if record.absent == 'AB' %}selected{% endif %}>AB</option>
+                                <option value="P" {% if record.absent == 'P' %}selected{% endif %}>P</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tbody>
+            {% for employee in absent_employees %}
+                <tr>
+                    <td>{{ employee.employee_code }}</td>
+                    <td>{{ employee.employee_name }}</td>
+                    <td>{{ employee.category }}</td>
+                    <td>{{ employee.department }}</td>
+                    <td>AB</td>
+                    <td>
+                        <form method="post" action="{% url 'audit_adjustment_entry_view' date=date_obj %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="employee_code" value="{{ employee.employee_code }}">
+                            <input type="hidden" name="employee_name" value="{{ employee.employee_name }}">
+                            <select name="absent">
+                                <option value="AB">AB</option>
+                                <option value="P">P</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <script>
+        function filterTable(inputId, column) {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById(inputId);
+            filter = input.value.toLowerCase();
+            table = document.getElementById("dataTable");
+            tr = table.getElementsByTagName("tr");
+    
+            for (i = 1; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[column];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+    
+
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

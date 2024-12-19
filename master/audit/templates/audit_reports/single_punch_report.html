@@ -1,0 +1,110 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Single Punch Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+</head>
+<body>
+    {% include 'body/audit_header.html' %}
+    {% include 'body/audit_sidebar.html' %}
+
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Single Punch Report</div>
+                        </div>
+                        <div class="card-body">
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit" class="btn btn-default">Get</button>
+                            </form>
+                            <input type="text" id="myInput" onkeyup="filterTable('myInput', 'dataTable')" placeholder="Search for something..." style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; width: 300px;">
+                            
+                            <table class="table table-bordered table-bordered-bd-primary" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Employee Code</th>
+                                        <th>Employee</th>
+                                        <th>Category</th>
+                                        <th>Department</th>
+                                        <th>Shift</th>
+                               
+                                        <th>Intime</th>
+                               
+                                        <th>Outtime</th>
+                                        <th>TWH</th>
+                                        <th>OTH</th>
+                                        <th>Absent</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for attendance in punch_and_absent_list %}
+                                    <tr>
+                                        <td>{{ forloop.counter}}</td>
+                                        <td>{{ attendance.employee.employee_code }}</td>
+                                        <td>{{ attendance.employee }}</td>
+                                        <td>{{ attendance.employee.category }}</td>
+                                        <td>{{ attendance.employee.department }}</td>
+                                        <td>{{ attendance.shift }}</td>
+                             
+                                        <td>{{ attendance.intime|time:"H:i"  }}</td>
+                              
+                                        <td>{{ attendance.outtime|time:"H:i"  }}</td>
+                                        <td>{{ attendance.total_working_hours }}</td>
+                                        <td>{{ attendance.ot_hours }}</td>
+                                        <td>{{ attendance.absent }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.form-control').select2();
+        });
+
+        function filterTable(inputId, tableId) {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById(inputId);
+            filter = input.value.toLowerCase();
+            table = document.getElementById(tableId);
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = "none";
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    {% include 'body/footer.html' %}
+</body>
+</html>

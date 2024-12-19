@@ -1,0 +1,198 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Details from {{ start_date }} to {{ end_date }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- SIDE BAR -->
+        
+        {% include 'body/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                 <!-- Topbar -->
+
+            
+                
+                {% include 'body/header.html' %}
+
+                <div class="card">
+                    <div class="card-header">
+                            <h4 class="card-title">Attendance Details from {{ start_date }} to {{ end_date }}</h4>
+                            <div class="d-flex justify-content-between mb-3">
+                                <!-- Search Input -->
+                                <input type="text" id="myInput" onkeyup="filterTable('myInput', 'dataTable')" placeholder="Search for something..." class="form-control" style="width: 300px;">
+                                <div class="download-links mb-4">
+                                    <a href="{% url 'monthly_attendance_download_excel' %}" class="btn btn-success" target="_blank">Download Excel</a>
+                                 
+                                    <button onclick="printTable()" class="btn btn-primary">Print</button>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            function printTable() {
+                                var printWindow = window.open('', '', 'height=800,width=1000');
+                                printWindow.document.write('<html><head><title>Attendance Details  Print Table</title>');
+                                printWindow.document.write('<style>body { font-family: Arial, sans-serif; }');
+                                printWindow.document.write('.printable-table { width: 100%; margin: auto; border-collapse: collapse; }');
+                                printWindow.document.write('table { border-collapse: collapse; width: 100%; }');
+                                printWindow.document.write('th, td { border: 1px solid #333; padding: 6px; text-align: left; }');
+                                printWindow.document.write('th { background-color: #f2f2f2; }');
+                                printWindow.document.write('@page { size: landscape; margin: 10mm; }');
+                                printWindow.document.write('</style></head><body>');
+                                printWindow.document.write('<div style="text-align: center; margin-bottom: 20px;">');
+                                printWindow.document.write('<h2><strong>SKY LAB MILLS</strong></h2>');
+                                printWindow.document.write('<h3><strong>Attendance Details from {{ start_date }} to {{ end_date }}</strong></h3>');
+                                printWindow.document.write('</div>');
+                                printWindow.document.write('<table class="printable-table">');
+                                printWindow.document.write('<thead><tr><th>S.No</th><th>Employee Code</th><th>Employee Name</th><th>Department</th>');
+                        
+                                // Write the days' headers
+                                {% for day in dates %}
+                                    printWindow.document.write('<th>{{ day|date:"j" }}</th>');
+                                {% endfor %}
+                                printWindow.document.write('<th>Total</th></tr></thead><tbody>');
+                        
+                                // Write the table rows
+                                {% for data in attendance_data %}
+                                    printWindow.document.write('<tr>');
+                                    printWindow.document.write('<td>{{ forloop.counter }}</td>');
+                                    printWindow.document.write('<td>{{ data.employee_code }}</td>');
+                                    printWindow.document.write('<td>{{ data.employee_name }}</td>');
+                                    printWindow.document.write('<td>{{ data.department }}</td>');
+                                    {% for status in data.attendance %}
+                                        printWindow.document.write('<td>{{ status }}</td>');
+                                    {% endfor %}
+                                    printWindow.document.write('<td>{{ data.present_days }}</td>');
+                                    printWindow.document.write('</tr>');
+                                {% endfor %}
+                                printWindow.document.write('</tbody></table>');
+                                printWindow.document.write('</body></html>');
+                        
+                                printWindow.document.close();
+                                printWindow.focus();
+                                printWindow.print();
+                            }
+                        </script>
+                        
+                        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+                        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                        <script>
+                            $(document).ready(function() {
+                                $('.form-control').select2();
+                            });
+                    
+                            function filterTable(inputId, tableId) {
+                                var input, filter, table, tr, td, i, j, txtValue;
+                                input = document.getElementById(inputId);
+                                filter = input.value.toLowerCase();
+                                table = document.getElementById(tableId);
+                                tr = table.getElementsByTagName("tr");
+                    
+                                for (i = 1; i < tr.length; i++) {
+                                    tr[i].style.display = "none";
+                                    td = tr[i].getElementsByTagName("td");
+                                    for (j = 0; j < td.length; j++) {
+                                        if (td[j]) {
+                                            txtValue = td[j].textContent || td[j].innerText;
+                                            if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                                                tr[i].style.display = "";
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        </script>
+                        <div class="table-responsive printable-table">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-fixed table-bordered-bd-primary" id="dataTable">
+                                    <thead>
+                                            <tr>
+                                                <th>Serial No.</th>
+                                                <th>Employee Code</th>
+                                                <th>Employee Name</th>
+                                                <th>Department</th>
+                                                {% for day in dates %}
+                                                    <th>{{ day|date:"j" }}</th>
+                                                {% endfor %}
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for data in attendance_data %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ data.employee_code }}</td>
+                                                    <td>{{ data.employee_name }}</td>
+                                                    <td>{{ data.department }}</td>
+                                                    {% for status in data.attendance %}
+                                                        <td>{{ status }}</td>
+                                                    {% endfor %}
+                                                    <td>{{ data.present_days }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.form-control').select2();
+        });
+
+        function filterTable(inputId, tableId) {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById(inputId);
+            filter = input.value.toLowerCase();
+            table = document.getElementById(tableId);
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = "none";
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    {% include 'body/footer.html' %}
+</body>
+</html>

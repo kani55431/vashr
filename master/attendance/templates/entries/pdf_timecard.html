@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Time Card Report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container my-4">
+        <!-- Header Section -->
+        <div class="row mb-4">
+            <!-- Column 1: Company Info -->
+            <div class="col-md-4 text-center border-right border-dark">
+                <h3>SBT APPARELS PVT LTD</h3>
+            </div>
+            <!-- Column 2: Report Title -->
+            <div class="col-md-4 text-center border-right border-dark">
+                <h4>Time Card Attendance Details Report Form</h4>
+            </div>
+            <!-- Column 3: Additional Info -->
+            <div class="col-md-4 text-center">
+                <p>License No: TPR12959</p>
+                <p>DOJ: {{ employee.date_of_joining|date:"d/m/Y" }}</p>
+                <p>Normal Wages: Shift</p>
+                <p>OT: Double The Wage</p>
+            </div>
+        </div>
+
+        <!-- Additional Info Section -->
+        <div class="row mb-4">
+            <div class="col-md-4 text-center border-right border-dark">
+                <p>Working Hours</p>
+            </div>
+            <div class="col-md-4 text-center border-right border-dark">
+                <p>Date</p>
+            </div>
+            <div class="col-md-4 text-center border-dark">
+                <p>&nbsp;</p> <!-- Empty Column -->
+            </div>
+        </div>
+
+        <!-- Employee Details Section -->
+        <div class="row mb-4 border border-dark p-3">
+            <div class="col-md-4">
+                <p><strong>Employee Name:</strong> {{ employee.employee_name }}</p>
+                <p><strong>Department:</strong> {{ employee.department.name }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Designation:</strong> {{ employee.designation }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Employee Code:</strong> {{ employee.employee_code }}</p>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th rowspan="2">S.No</th>
+                    <th rowspan="2">Attn Date</th>
+                    <th colspan="3">Time</th>
+                    <th rowspan="2">Total Hrs</th>
+                    <th rowspan="2">Total OT Hrs</th>
+                    <th rowspan="2">Shift</th>
+                    <th rowspan="2">Present</th>
+                    <th rowspan="2">OT</th>
+                </tr>
+                <tr>
+                    <th>Shift Time</th>
+                    <th>In Time</th>
+                    <th>Out Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i, day in records.days %}
+                <tr>
+                    <td>{{ i }}</td>
+                    <td>{{ day.date }}</td>
+                    <td>{{ day.shift_time }}</td>
+                    <td>{{ day.intime }}</td>
+                    <td>{{ day.outtime }}</td>
+                    <td>{{ day.total_working_hours }}</td>
+                    <td>{{ day.ot_hours }}</td>
+                    <td>{{ day.shift }}</td>
+                    <td>{{ day.absent }}</td>
+                    <td>{{ day.ot }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="10">No attendance records found for this employee.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Footer Section -->
+        <footer class="border-top pt-2">
+            <p>Note: WH - Weekly Off, EL - Earned Leave, NH - National Holiday, FH - Festival Holiday, OH - Other Holiday, NA - Not Applicable</p>
+            <p>Total Present: {{ records.total_days }}.00, Total OT Hours: {{ records.total_ot_hours }}.00, Total Holidays: 0.00, Total Weekly Off: 5.00, Total Absent: {{ records.absent_days }}.00, Total Hours Worked: {{ records.total_hours }}.00</p>
+        </footer>
+    </div>
+</body>
+</html>

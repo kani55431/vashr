@@ -1,0 +1,102 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Upload</title>
+   
+ <!-- Include Font Awesome CSS -->
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- SIDE BAR -->
+        
+        {% include 'body/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                 <!-- Topbar -->
+
+            
+                
+                {% include 'body/header.html' %}
+
+                <div class="card">
+                    <div class="card-header">
+                            <div class="card-title">Attendance Upload</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title">Upload Employee Details</h5>
+                                <a href="{% static 'assets/file/attednacebulkuplaod.xlsx' %}" class="btn btn-primary" download>Download Upload Attendance Format</a>
+                            </div>
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="file" name="attendance_file" accept=".xlsx" required>
+                                <button type="submit">Upload Attendance</button>
+                            </form>
+                        
+                            {% if messages %}
+                                <div>
+                                    {% for message in messages %}
+                                        <p>{{ message }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+   
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('.form-control').select2();
+    });
+
+    function filterTable(inputId, tableId) {
+        var input, filter, table, tr, td, i, j, txtValue;
+        input = document.getElementById(inputId);
+        filter = input.value.toLowerCase();
+        table = document.getElementById(tableId);
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 1; i < tr.length; i++) {
+            tr[i].style.display = "none";
+            td = tr[i].getElementsByTagName("td");
+            for (j = 0; j < td.length; j++) {
+                if (td[j]) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                        break;
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+<script>
+$(document).ready(function() {
+$('.form-control').select2();
+});
+</script>
+
+{% include 'body/footer.html' %}
+</body>
+</html>

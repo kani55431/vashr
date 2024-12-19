@@ -1,0 +1,88 @@
+{% load static %}
+<div class="sidebar">
+    <div class="scrollbar-inner sidebar-wrapper">
+        <div class="user">
+            <div class="photo">
+                <img src="{% static 'assets/img/profile.png' %}">
+            </div>
+            <div class="info">
+                <a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+                    <span>
+                      {{user.username}}
+                        <span class="user-level"> ELIXIR Payroll</span>
+                        <span class="caret"></span>
+                    </span>
+                </a>
+                <div class="clearfix"></div>
+
+                <div class="collapse in" id="collapseExample" aria-expanded="true">
+                    <ul class="nav">
+              
+                       
+                        <li>
+                            <a href="{% url 'audit_employee_list' %}">
+                                <span class="link-collapse">Employees</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'audit_inactive_employee_list' %}">
+                                <span class="link-collapse">Releave Employees</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'audit_import_attendance' %}">
+                                <span class="link-collapse">Attendance Import</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'pf_upload_attendance_employee_wise' %}">
+                                <span class="link-collapse"> PF Attendance Upload</span>
+                            </a>
+                        </li>
+                       
+                       
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <ul class="nav">
+            <li class="nav-item active">
+                <a href="{% url 'audit_home' %}">
+                    <i class="la la-dashboard"></i>
+                    <p>Dashboard</p>
+                    <span class="badge badge-count"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'audit_home' %}">
+                    <i class="la la-table"></i>
+                    <p>Attendance Reports</p>
+                    <span class="badge badge-count"></span>
+                </a>
+            </li>
+           
+            <li class="nav-item">
+                <a href="{% url 'audit_salary_reports' %}">
+                    <i class="la la-th"></i>
+                    <p>Salary Reports</p>
+              
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'holiday_list_view' %}">
+                    <i class="la la-bell"></i>
+                    <p>Holiday</p>
+                   
+                </a>
+            </li>
+           
+          
+          
+        </ul>
+    </div>
+</div>

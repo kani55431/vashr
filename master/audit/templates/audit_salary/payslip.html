@@ -1,0 +1,142 @@
+{% load audit_custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay Slip</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .table-bordered tr, .table-bordered td {
+            border: 1px solid black !important;
+        }
+        .heading {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .subheading {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .small-text {
+            font-size: 14px;
+        }
+        .signature {
+            height: 80px;
+        }
+        .bordered-box {
+            border: 1px solid black;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <div class="text-center mb-3">
+        <div class="heading">Vasantha Advanced Systems,</div>
+        <div class="d-flex justify-content-between">
+            <div>Period From 01/{{ selected_date|date:"m/Y" }}</div>
+            <div>TO {{ selected_date|date:"d/m/Y" }}</div>
+        </div>
+    </div>
+
+    <div class="text-center subheading mb-2">Wage Slip / वेतन पर्ची / ஊதிய சீட்டு</div>
+    <div class="text-center small-text mb-4">SERVICE CARD (FORM-25B)</div>
+
+    {% load custom_filters %}
+
+    {% for salary in salary_details %}
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td colspan="2">Employee Code / कर्मचारी कोड / பணியாளர் எண்</td>
+                <td colspan="2">{{ salary.employee_code }}</td>
+                <td>Designation / पद / பதவி</td>
+                <td>{{ salary.designation }}</td>
+            </tr>
+            <tr>
+                <td colspan="2">Employee Name / कर्मचारी का नाम / பணியாளர் பெயர்</td>
+                <td colspan="2">{{ salary.employee_name }}</td>
+                <td>Department / विभाग / துறை</td>
+                <td>{{ salary.department }}</td>
+            </tr>
+            <tr>
+                <td colspan="3">Earnings / आय / வருவாய்</td>
+                <td colspan="3">Deductions / कटौती / கழிப்புகள்</td>
+            </tr>
+            <tr>
+                <td>Basic/DA / मूल वेतन / அடிப்படை சம்பளம்</td>
+                <td>{{ salary.basic_amount }}</td>
+                <td>P.F. / पी एफ / பி எஃப்</td>
+                <td>{{ salary.pf_amount }}</td>
+                <td>Father's / Husband's Name / पिता/ पति का नाम / தந்தை/கணவர் பெயர்</td>
+                <td>{{ salary.father_name }}</td>
+            </tr>
+            <tr>
+                <td>HRA / मकान किराया भत्ता / வீட்டு வாடகை பெற</td>
+                <td>{{ salary.hra_amount }}</td>
+                <td>ESI / ई एस आई / இ எஸ் ஐ</td>
+                <td>{{ salary.esi_amount }}</td>
+                <td>Date of entry into service / सेवा में प्रवेश की तिथि / சேவையில் நுழைந்த தேதி</td>
+                <td>{{ salary.entry_date|date:"d/m/Y" }}</td>
+            </tr>
+            <tr>
+                <td>Conveyance / वाहन भत्ता / போக்குவரத்து கொடுக்க</td>
+                <td>0.00</td>
+                <td>Other / अन्य / மற்ற</td>
+                <td>0.00</td>
+                <td>No of Shifts Worked / काम की शिफ्ट्स / முறை</td>
+                <td>{{ salary.shifts_worked }}</td>
+            </tr>
+            <tr>
+                <td>OT Wages / ओ टी वेतन / ஓவர் டைம் ஊதியம்</td>
+                <td>{{ salary.ot_amount }}</td>
+                <td>Salary Advance / वेतन अग्रिम / முன்பணம்</td>
+                <td>{{ salary.advance_deduction }}</td>
+                <td>Paid Holidays / सवेतन अवकाश / ஊதியம் வழங்கும் விடுமுறை</td>
+                <td>{{ salary.paid_holidays }}</td>
+            </tr>
+            <tr>
+                <td>Other / अन्य / மற்ற</td>
+                <td>0.00</td>
+                <td>Canteen / कैंटीन / கேன்டீன்</td>
+                <td>{{ salary.canteen_deduction }}</td>
+                <td>Min Rate of Wages / न्यूनतम वेतन दर / குறைந்தபட்சம் விகிதம்</td>
+                <td>{{ salary.min_rate_wages }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-end">Total / कुल / மொத்தம்</td>
+                <td>{{ salary.basic_amount  }} {{ salary.da_amount }}</td>
+                <td>{{ salary.total_deductions }}</td>
+                <td>P.F. No / पी एफ नं. / பி எஃப் எண்</td>
+                <td>{{ salary.pf_number }}</td>
+            </tr>
+            <tr>
+                <td colspan="3">Net Amount Paid / भुगतान की गई राशि / நிகரமாக வழங்கிய தொகை</td>
+                <td colspan="3">{{ salary.net_salary }}</td>
+            </tr>
+            <tr>
+                <td colspan="3">In Words / शब्दों में / வார்த்தைகளில்</td>
+                <td colspan="3">{{ salary.net_salary|intword }} Only</td>
+            </tr>
+            <tr>
+                <td colspan="3">Employee's Signature / कर्मचारी हस्ताक्षर / பணியாளர் கையொப்பம்</td>
+                <td colspan="3">Date of Payment / भुगतान की तिथि / செலுத்திய தேதி</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endfor %}
+
+    <div class="bordered-box mt-4">
+        <div class="row signature">
+            <div class="col-6 text-start">{{ selected_date|date:"d/m/Y" }}</div>
+            <div class="col-6 text-end">Manager / प्रबंधक / மேலாளர்</div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
